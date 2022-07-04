@@ -1,11 +1,11 @@
 <?php
 
 use CMW\Controller\redirect\redirectController;
-use CMW\Router\router;
+use CMW\Router\Router;
 
 require_once('lang/'.getenv("LOCALE").'.php');
 
-/** @var $router router Main router */
+/** @var $router Router Main router */
 
 //Admin pages
 $router->scope('/cmw-admin/redirect', function($router) {
