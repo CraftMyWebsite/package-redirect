@@ -3,7 +3,7 @@ namespace CMW\Controller\Redirect;
 
 use CMW\Controller\CoreController;
 use CMW\Controller\users\UsersController;
-use CMW\Model\Redirect\redirectModel;
+use CMW\Model\Redirect\RedirectModel;
 
 /**
  * Class: @redirectController
@@ -12,7 +12,7 @@ use CMW\Model\Redirect\redirectModel;
  * @version 1.0
  */
 
-class redirectController extends CoreController
+class RedirectController extends CoreController
 {
 
     public static string $themePath;
@@ -24,7 +24,7 @@ class redirectController extends CoreController
 
     public function frontRedirectListAdmin(){
         UsersController::isUserHasPermission("redirect.show");
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
 
         //Get all redirect
         $redirectList = $redirect->fetchAll();
@@ -36,7 +36,7 @@ class redirectController extends CoreController
     public function create(){
         UsersController::isUserHasPermission("redirect.create");
 
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
 
 
         view('redirect', 'add.admin', [], 'admin');
@@ -45,7 +45,7 @@ class redirectController extends CoreController
     public function createPost(){
         UsersController::isUserHasPermission("redirect.create");
 
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
 
 
         if ($redirect->checkName(filter_input(INPUT_POST, "name")) > 0){
@@ -84,7 +84,7 @@ class redirectController extends CoreController
     public function edit($id){
         UsersController::isUserHasPermission("redirect.edit");
 
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
         $redirect->fetch($id);
 
 
@@ -95,7 +95,7 @@ class redirectController extends CoreController
         UsersController::isUserHasPermission("redirect.edit");
 
 
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
 
         $redirect->id = $id;
 
@@ -133,7 +133,7 @@ class redirectController extends CoreController
     public function delete($id){
         UsersController::isUserHasPermission("redirect.delete");
 
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
         $redirect->id = $id;
 
         $redirect->delete();
@@ -147,7 +147,7 @@ class redirectController extends CoreController
 
     public function stats(){
         UsersController::isUserHasPermission("redirect.stats");
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
 
         $stats = $redirect->getStats();
 
@@ -166,7 +166,7 @@ class redirectController extends CoreController
     public function redirect($slug){
         $core = new CoreController();
 
-        $redirect = new redirectModel();
+        $redirect = new RedirectModel();
 
         $redirect->fetchWithSlug($slug);
 

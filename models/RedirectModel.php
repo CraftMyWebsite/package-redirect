@@ -11,7 +11,7 @@ use CMW\Model\Manager;
  * @author Teyir
  * @version 1.0
  */
-class redirectModel extends Manager
+class RedirectModel extends Manager
 {
     public ?int $id;
     public string $name;
@@ -76,7 +76,7 @@ class redirectModel extends Manager
                 array_unshift($key, $firstElement);
                 $key = implode('', $key);
 
-                if (property_exists(redirectModel::class, $key)) {
+                if (property_exists(RedirectModel::class, $key)) {
                     $this->$key = $property;
                 }
             }
@@ -110,7 +110,7 @@ class redirectModel extends Manager
                 array_unshift($key, $firstElement);
                 $key = implode('', $key);
 
-                if (property_exists(redirectModel::class, $key)) {
+                if (property_exists(RedirectModel::class, $key)) {
                     $this->$key = $property;
                 }
             }

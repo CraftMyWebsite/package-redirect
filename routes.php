@@ -1,6 +1,6 @@
 <?php
 
-use CMW\Controller\redirect\redirectController;
+use CMW\Controller\redirect\RedirectController;
 use CMW\Router\Router;
 
 require_once('lang/'.getenv("LOCALE").'.php');
@@ -15,18 +15,18 @@ $router->scope('/cmw-admin/redirect', function($router) {
     $router->post('/add', "redirect#createPost");
 
     $router->get('/edit/:id', function($id) {
-        (new redirectController)->edit($id);
+        (new RedirectController)->edit($id);
     })->with('id', '[0-9]+');
     $router->post('/edit/:id', function($id) {
-        (new redirectController)->editPost($id);
+        (new RedirectController)->editPost($id);
     })->with('id', '[0-9]+');
 
 
     $router->get('/delete/:id', function($id) {
-        (new redirectController)->delete($id);
+        (new RedirectController)->delete($id);
     })->with('id', '[0-9]+');
     $router->get('/delete/:id', function($id) {
-        (new redirectController)->delete($id);
+        (new RedirectController)->delete($id);
     })->with('id', '[0-9]+');
 
 
@@ -41,7 +41,7 @@ $router->scope('/cmw-admin/redirect/list', function($router) {
     $router->scope('/r', function ($router){
 
         $router->get('/:slug', function($slug) {
-            (new redirectController)->redirect($slug);
+            (new RedirectController)->redirect($slug);
         })->with('slug', '.*?');
 
     });
