@@ -7,12 +7,6 @@ ob_start();
 /* @var redirectModel[] $redirect */
 /* @var redirectModel[] $number */ ?>
 
-<!-- Chart.js (lib) -->
-<script src="<?= getenv("PATH_SUBFOLDER") ?>admin/resources/vendors/chart.js/Chart.min.js"></script>
-
-<!-- Main.js -->
-<script rel="script" src="<?= getenv("PATH_SUBFOLDER") ?>app/package/redirect/views/ressources/js/main.js"></script>
-
 <div class="container-fluid">
     <div class="row">
 

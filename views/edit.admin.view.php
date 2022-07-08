@@ -2,8 +2,6 @@
 $title = REDIRECT_DASHBOARD_TITLE_EDIT;
 $description = REDIRECT_DASHBOARD_DESC_EDIT;
 
-$scripts = '<script rel="script" src="' . getenv("PATH_SUBFOLDER") . 'app/package/redirect/views/ressources/js/main.js"></script>';
-
 ob_start();
 /* @var redirectModel[] $redirect */
 ?>
@@ -71,6 +69,3 @@ ob_start();
 
 
 <?php $content = ob_get_clean(); ?>
-
-<?php require(getenv("PATH_ADMIN_VIEW") . 'template.php'); ?>
-

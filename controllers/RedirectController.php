@@ -29,8 +29,26 @@ class RedirectController extends CoreController
         //Get all redirect
         $redirectList = $redirect->fetchAll();
 
+        $includes = array(
+            "scripts" => [
+                "before" => [
+                    "admin/resources/vendors/bootstrap/js/bootstrap.bundle.min.js",
+                    "admin/resources/vendors/datatables/jquery.dataTables.min.js",
+                    "admin/resources/vendors/datatables-bs4/js/dataTables.bootstrap4.min.js",
+                    "admin/resources/vendors/datatables-responsive/js/dataTables.responsive.min.js",
+                    "admin/resources/vendors/datatables-responsive/js/responsive.bootstrap4.min.js",
+                    "admin/resources/vendors/datatables-buttons/js/dataTables.buttons.min.js",
+
+                ]
+            ],
+            "styles" => [
+                "admin/resources/vendors/datatables-bs4/css/dataTables.bootstrap4.min.css",
+                "admin/resources/vendors/datatables-responsive/css/responsive.bootstrap4.min.css"
+            ]);
+
+
         //Include the view file ("views/list.admin.view.php").
-        view('redirect', 'list.admin', ["redirect" => $redirect, "redirectList" => $redirectList], 'admin');
+        view('redirect', 'list.admin', ["redirect" => $redirect, "redirectList" => $redirectList], 'admin', $includes);
     }
 
     public function create(){
@@ -38,8 +56,15 @@ class RedirectController extends CoreController
 
         $redirect = new RedirectModel();
 
+        $includes = array(
+            "scripts" => [
+                "before" => [
+                    "app/package/redirect/views/assets/js/main.js"
+                ]
+            ]
+        );
 
-        view('redirect', 'add.admin', [], 'admin');
+        view('redirect', 'add.admin', [], 'admin', $includes);
     }
 
     public function createPost(){
@@ -87,8 +112,15 @@ class RedirectController extends CoreController
         $redirect = new RedirectModel();
         $redirect->fetch($id);
 
+        $includes = array(
+            "scripts" => [
+                "before" => [
+                    "app/package/redirect/views/assets/js/main.js"
+                ]
+            ]
+        );
 
-        view('redirect', 'edit.admin', ["redirect" => $redirect], 'admin');
+        view('redirect', 'edit.admin', ["redirect" => $redirect], 'admin', $includes);
     }
 
     public function editPost($id){
@@ -157,7 +189,17 @@ class RedirectController extends CoreController
 
         $redirect->getAllClicks();
 
-        view('redirect', 'stats.admin', ["redirect" => $redirect, "stats" => $stats, "number" => $number], 'admin');
+        $includes = array(
+            "scripts" => [
+                "before" => [
+                    "admin/resources/vendors/chart.js/Chart.min.js",
+                    "app/package/redirect/views/assets/js/main.js"
+                ]
+            ]
+        );
+
+        view('redirect', 'stats.admin', ["redirect" => $redirect, "stats" => $stats,
+            "number" => $number], 'admin', $includes);
     }
 
     /* //////////////////// PUBLIC //////////////////// */
