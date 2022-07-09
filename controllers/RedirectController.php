@@ -73,7 +73,7 @@ class RedirectController extends CoreController
         $redirect = new RedirectModel();
 
 
-        if ($redirect->checkName(filter_input(INPUT_POST, "name")) > 0){
+        if ($redirect->checkName(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING)) > 0){
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -81,7 +81,7 @@ class RedirectController extends CoreController
 
             header("location: ../redirect/add");
 
-        } elseif ($redirect->checkSlug(filter_input(INPUT_POST, "slug")) > 0){
+        } elseif ($redirect->checkSlug(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING)) > 0){
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -91,9 +91,9 @@ class RedirectController extends CoreController
         }
         else {
 
-            $redirect->name = filter_input(INPUT_POST, "name");
-            $redirect->slug = filter_input(INPUT_POST, "slug");
-            $redirect->target = filter_input(INPUT_POST, "target");
+            $redirect->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+            $redirect->slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+            $redirect->target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
             $redirect->create();
 
@@ -131,14 +131,14 @@ class RedirectController extends CoreController
 
         $redirect->id = $id;
 
-        if ($redirect->checkNameEdit(filter_input(INPUT_POST, "name"), $id) > 0){
+        if ($redirect->checkNameEdit(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING), $id) > 0){
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_ERROR_NAME;
 
             header("location: ../edit/".$redirect->id);
 
-        } elseif ($redirect->checkSlugEdit(filter_input(INPUT_POST, "slug"), $id) > 0){
+        } elseif ($redirect->checkSlugEdit(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING), $id) > 0){
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -147,9 +147,9 @@ class RedirectController extends CoreController
             header("location: ../edit/".$redirect->id);
         } else{
 
-            $redirect->name = filter_input(INPUT_POST, "name");
-            $redirect->slug = filter_input(INPUT_POST, "slug");
-            $redirect->target = filter_input(INPUT_POST, "target");
+            $redirect->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+            $redirect->slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+            $redirect->target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
             $redirect->update();
 
