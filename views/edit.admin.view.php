@@ -2,7 +2,6 @@
 $title = REDIRECT_DASHBOARD_TITLE_EDIT;
 $description = REDIRECT_DASHBOARD_DESC_EDIT;
 
-ob_start();
 /* @var \CMW\Entity\Redirect\RedirectEntity $redirect */
 ?>
 
@@ -69,6 +68,3 @@ ob_start();
             </div>
         </div>
     </div>
-
-
-<?php $content = ob_get_clean(); ?>

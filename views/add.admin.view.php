@@ -2,7 +2,6 @@
 $title = REDIRECT_DASHBOARD_TITLE_ADD;
 $description = REDIRECT_DASHBOARD_DESC;
 
-ob_start();
 ?>
 
 
@@ -65,6 +64,3 @@ ob_start();
         </div>
     </div>
 </div>
-
-
-<?php $content = ob_get_clean(); ?>

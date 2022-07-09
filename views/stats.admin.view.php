@@ -2,7 +2,6 @@
 $title = REDIRECT_DASHBOARD_TITLE_STATS;
 $description = REDIRECT_DASHBOARD_DESC_STATS;
 
-ob_start();
 /* @var \CMW\Entity\Redirect\RedirectEntity[] $stats */
 /* @var \CMW\Model\Redirect\RedirectModel $redirectionNumber */
 /* @var \CMW\Model\Redirect\RedirectModel $totalClicks */
@@ -128,8 +127,3 @@ ob_start();
         }
     });
 </script>
-
-
-<?php $content = ob_get_clean(); ?>
-
-<?php require(getenv("PATH_ADMIN_VIEW") . 'template.php'); ?>

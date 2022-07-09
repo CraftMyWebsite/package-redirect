@@ -35,8 +35,6 @@ $scripts = '
     });
 </script>'; ?>
 
-<?php ob_start(); ?>
-
 <div class="content">
 
     <div class="container-fluid">
@@ -109,5 +107,3 @@ $scripts = '
     </div>
 
 </div>
-
-<?php $content = ob_get_clean(); ?>
