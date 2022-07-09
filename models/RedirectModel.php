@@ -2,6 +2,7 @@
 
 namespace CMW\Model\Redirect;
 
+use CMW\Entity\Redirect\RedirectEntity;
 use CMW\Model\Manager;
 
 
@@ -13,195 +14,159 @@ use CMW\Model\Manager;
  */
 class RedirectModel extends Manager
 {
-    public ?int $id;
-    public string $name;
-    public string $slug;
-    public string $target;
-    public int $click;
-    public int $isDefine;
-    public int $totalClicks;
 
-
-    public function create(): void
+    public function createRedirect(string $name, string $slug, string $target): ?RedirectEntity
     {
         $var = array(
-            "name" => $this->name,
-            "slug" => $this->slug,
-            "target" => $this->target
+            "name" => $name,
+            "slug" => $slug,
+            "target" => $target
         );
 
-        $sql = "INSERT INTO cmw_redirect (name, slug, target) VALUES (:name, :slug, :target)";
+        $sql = "INSERT INTO cmw_redirect (redirect_name, redirect_slug, redirect_target) VALUES (:name, :slug, :target)";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
+
+        if ($req->execute($var)) {
+            $id = $db->lastInsertId();
+            return $this->getRedirectById($id);
+        }
+
+        return null;
 
     }
 
-    public function fetchAll(): array
+    public function getRedirects(): array
     {
 
         $sql = "SELECT * FROM cmw_redirect";
         $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-        $res = $req->execute();
+        $res = $db->prepare($sql);
 
-        if ($res) {
-            return $req->fetchAll();
+        if (!$res->execute()) {
+            return array();
         }
 
+        $toReturn = array();
 
-        return [];
-    }
-
-    public function fetch($id): void
-    {
-        $var = array(
-            "id" => $id
-        );
-
-        $sql = "SELECT * FROM cmw_redirect WHERE id=:id";
-
-        $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-
-        if ($req->execute($var)) {
-            $result = $req->fetch();
-            foreach ($result as $key => $property) {
-
-                //to camel case all keys
-                $key = explode('_', $key);
-                $firstElement = array_shift($key);
-                $key = array_map('ucfirst', $key);
-                array_unshift($key, $firstElement);
-                $key = implode('', $key);
-
-                if (property_exists(RedirectModel::class, $key)) {
-                    $this->$key = $property;
-                }
-            }
+        while ($page = $res->fetch()) {
+            $toReturn[] = $this->getRedirectById($page["redirect_id"]);
         }
+
+        return $toReturn;
     }
 
-    public function fetchWithSlug($slug): void
+    public function getRedirectById($id): ?RedirectEntity
     {
-        $var = array(
-            "slug" => $slug
-        );
 
-        $sql = "SELECT * FROM cmw_redirect WHERE slug=:slug";
+
+        $sql = "SELECT * FROM cmw_redirect WHERE redirect_id=:id";
 
         $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
+        $res = $db->prepare($sql);
 
-        if ($req->execute($var)) {
-
-            $result = $req->fetch();
-            if (empty($result)) {
-                header("location: " . getenv("PATH_SUBFOLDER"));
-            }
-
-            foreach ($result as $key => $property) {
-
-                //to camel case all keys
-                $key = explode('_', $key);
-                $firstElement = array_shift($key);
-                $key = array_map('ucfirst', $key);
-                array_unshift($key, $firstElement);
-                $key = implode('', $key);
-
-                if (property_exists(RedirectModel::class, $key)) {
-                    $this->$key = $property;
-                }
-            }
+        if (!$res->execute(array("id" => $id))) {
+            return null;
         }
+
+        $res = $res->fetch();
+
+        return new RedirectEntity(
+            $res['redirect_id'],
+            $res['redirect_name'],
+            $res['redirect_slug'],
+            $res['redirect_target'],
+            $res['redirect_click'],
+            $res['redirect_is_define'],
+            $this->getTotalClicks()
+        );
     }
 
-    public function update(): void
+    public function getRedirectBySlug($slug): ?RedirectEntity
+    {
+        $sql = "SELECT * FROM cmw_redirect WHERE redirect_slug=:slug";
+
+        $db = Manager::dbConnect();
+        $res = $db->prepare($sql);
+
+        if (!$res->execute(array("slug" => $slug))) {
+            return null;
+        }
+
+        $res = $res->fetch();
+
+        if (!empty($res)) {
+            return new RedirectEntity(
+                $res['redirect_id'],
+                $res['redirect_name'],
+                $res['redirect_slug'],
+                $res['redirect_target'],
+                $res['redirect_click'],
+                $res['redirect_is_define'],
+                $this->getTotalClicks()
+            );
+        }
+
+        header("location: " . getenv("PATH_SUBFOLDER"));
+
+        return null;
+    }
+
+    public function updateRedirect(int $id, string $name, string $slug, string $target): ?RedirectEntity
     {
         $var = array(
-            "id" => $this->id,
-            "name" => $this->name,
-            "slug" => $this->slug,
-            "target" => $this->target
+            "id" => $id,
+            "name" => $name,
+            "slug" => $slug,
+            "target" => $target
         );
 
-        $sql = "UPDATE cmw_redirect SET name=:name, slug=:slug, target=:target WHERE id=:id";
+        $sql = "UPDATE cmw_redirect SET redirect_name=:name, redirect_slug=:slug, redirect_target=:target WHERE redirect_id=:id";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
+
+        if ($req->execute($var))
+            return $this->getRedirectById($id);
+
+        return null;
     }
 
-    public function delete(): void
+    public function deleteRedirect(int $id): void
     {
-        $var = array(
-            "id" => $this->id
-        );
 
-        $sql = "DELETE FROM cmw_redirect WHERE id=:id";
+        $sql = "DELETE FROM cmw_redirect WHERE redirect_id=:id";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
+        $req->execute(array("id" => $id));
     }
 
     public function addClick($id): void
     {
-        $var = array(
-            "id" => $id
-        );
 
-        $sql = "UPDATE cmw_redirect SET click = click+1 WHERE id=:id";
+        $sql = "UPDATE cmw_redirect SET redirect_click = redirect_click+1 WHERE redirect_id=:id";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
-    }
-
-    public function addLog($id): void
-    {
-        $var = array(
-            "redirect_id" => $id
-        );
-
-        $sql = "INSERT INTO cmw_redirect_logs (redirect_id) VALUES (:redirect_id)";
-
-        $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-        $req->execute($var);
-
+        $req->execute(array("id" => $id));
     }
 
 
     public function redirect($id): void
     {
-        $this->fetch($id);
+        $res = $this->getRedirectById($id);
         $this->addClick($id);
-        $this->addLog($id);
+        (new RedirectLogsModel())->createLog($id);
 
-        header('Location: ' . $this->target);
-
+        header('Location: ' . $res->getTarget());
     }
 
-
-    public function getStats(): array
-    {
-        $sql = "SELECT `name`,`click` FROM cmw_redirect";
-        $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-        $res = $req->execute();
-
-        if ($res) {
-            return $req->fetchAll();
-        }
-
-        return [];
-    }
 
     public function getNumberOfLines(): int
     {
-        $sql = "SELECT id FROM cmw_redirect";
+        $sql = "SELECT redirect_id FROM cmw_redirect";
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
@@ -217,45 +182,32 @@ class RedirectModel extends Manager
 
     public function getTotalClicks(): int
     {
-        $sql = "SELECT SUM(click) FROM cmw_redirect";
+        $toReturn = 0;
+
+        $sql = "SELECT SUM(redirect_click) FROM cmw_redirect";
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute()) {
             $result = $req->fetch();
 
-            (empty($result['SUM(click)'])) ? $this->totalClicks = 0 : $this->totalClicks = $result['SUM(click)'];
-        }
-        return $this->totalClicks;
-    }
 
-    public function getAllClicks(): int
-    {
-        $sql = "SELECT id FROM cmw_redirect_logs";
-        $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-
-        if ($req->execute()) {
-            $lines = $req->fetchAll();
-
-            return count($lines);
+            (empty($result['SUM(click)'])) ?: $toReturn = $result['SUM(redirect_click)'];
         }
 
-        return 0;
+        return $toReturn;
     }
+
 
     public function checkName($name): int
     {
-        $var = array(
-            "name" => $name
-        );
 
-        $sql = "SELECT name FROM cmw_redirect WHERE name=:name";
+        $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
 
-        if ($req->execute($var)) {
+        if ($req->execute(array("name" => $name))) {
             $lines = $req->fetchAll();
 
             return count($lines);
@@ -266,16 +218,13 @@ class RedirectModel extends Manager
 
     public function checkSlug($slug): int
     {
-        $var = array(
-            "slug" => $slug
-        );
 
-        $sql = "SELECT slug FROM cmw_redirect WHERE slug=:slug";
+        $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
 
-        if ($req->execute($var)) {
+        if ($req->execute(array("slug" => $slug))) {
             $lines = $req->fetchAll();
 
             return count($lines);
@@ -291,7 +240,7 @@ class RedirectModel extends Manager
             "id" => $id
         );
 
-        $sql = "SELECT name FROM cmw_redirect WHERE name=:name AND id != :id";
+        $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name AND redirect_id != :id";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
@@ -312,7 +261,7 @@ class RedirectModel extends Manager
             "id" => $id
         );
 
-        $sql = "SELECT slug FROM cmw_redirect WHERE slug=:slug AND id != :id";
+        $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug AND redirect_id != :id";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);

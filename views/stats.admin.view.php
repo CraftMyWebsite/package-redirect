@@ -3,9 +3,10 @@ $title = REDIRECT_DASHBOARD_TITLE_STATS;
 $description = REDIRECT_DASHBOARD_DESC_STATS;
 
 ob_start();
-/* @var redirectModel[] $stats */
-/* @var redirectModel[] $redirect */
-/* @var redirectModel[] $number */ ?>
+/* @var \CMW\Entity\Redirect\RedirectEntity[] $stats */
+/* @var \CMW\Model\Redirect\RedirectModel $redirectionNumber */
+/* @var \CMW\Model\Redirect\RedirectModel $totalClicks */
+/* @var \CMW\Entity\Redirect\RedirectEntity[] $allClicks */?>
 
 <div class="container-fluid">
     <div class="row">
@@ -14,7 +15,7 @@ ob_start();
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3><?= number_format($number) ?></h3>
+                    <h3><?= number_format($redirectionNumber) ?></h3>
 
                     <p><?= REDIRECT_DASHBOARD_STATS_NUMBER ?></p>
                 </div>
@@ -28,7 +29,7 @@ ob_start();
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3><?= number_format($redirect->totalClicks) ?></h3>
+                    <h3><?= number_format($totalClicks) ?></h3>
 
                     <p><?= REDIRECT_DASHBOARD_STATS_CLICKS_ACTIVES ?></p>
                 </div>
@@ -42,7 +43,7 @@ ob_start();
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3><?= number_format($redirect->getAllClicks()) ?></h3>
+                    <h3><?= number_format($allClicks) ?></h3>
 
                     <p><?= REDIRECT_DASHBOARD_STATS_CLICKS_TOTAUX ?></p>
                 </div>
@@ -99,19 +100,19 @@ ob_start();
             //website name
             labels: [
                 <?php foreach ($stats as $items):?>
-                <?=json_encode($items['name']) . ","?>
+                <?=json_encode($items->getName()) . ","?>
                 <?php endforeach;?>
             ],
             datasets: [{
                 //Number of clicks
                 data: [
                     <?php foreach ($stats as $items):?>
-                    <?=json_encode($items['click']) . ","?>
+                    <?=json_encode($items->getClick()) . ","?>
                     <?php endforeach;?>
                 ],
                 //Color (random)
                 backgroundColor: [
-                    <?php for ($i = 0; $i < $number; $i++): ?>
+                    <?php for ($i = 0; $i < $redirectionNumber; $i++): ?>
                     <?= "random_rgb()," ?>
                     <?php endfor; ?>
                 ],

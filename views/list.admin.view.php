@@ -1,10 +1,8 @@
 <?php
 $title = REDIRECT_DASHBOARD_TITLE;
 $description = REDIRECT_DASHBOARD_DESC;
-?>
 
-
-<?php $scripts = '
+$scripts = '
 <script>
     $(function () {
         $("#redirect_table").DataTable({
@@ -39,77 +37,77 @@ $description = REDIRECT_DASHBOARD_DESC;
 
 <?php ob_start(); ?>
 
-    <div class="content">
+<div class="content">
 
-        <div class="container-fluid">
-            <div class="row">
+    <div class="container-fluid">
+        <div class="row">
 
-                <div class="col-12">
-                    <div class="card">
+            <div class="col-12">
+                <div class="card">
 
-                        <div class="card-header">
-                            <h3 class="card-title"><?= REDIRECT_DASHBOARD_TITLE ?></h3>
-                        </div>
+                    <div class="card-header">
+                        <h3 class="card-title"><?= REDIRECT_DASHBOARD_TITLE ?></h3>
+                    </div>
 
-                        <div class="card-body">
+                    <div class="card-body">
 
-                            <table id="redirect_table" class="table table-bordered table-striped">
+                        <table id="redirect_table" class="table table-bordered table-striped">
 
-                                <thead>
+                            <thead>
+                            <tr>
+                                <th><?= REDIRECT_LIST_TABLE_ID ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_NAME ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_SLUG ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_TARGET ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_CLICK ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_EDIT ?></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <?php /** @var \CMW\Entity\Redirect\RedirectEntity[] $redirectList */
+                            foreach ($redirectList as $redirect) : ?>
                                 <tr>
-                                    <th><?= REDIRECT_LIST_TABLE_ID ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_NAME ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_SLUG ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_TARGET ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_CLICK ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_EDIT ?></th>
+                                    <td><?= $redirect->getId() ?></td>
+                                    <td><?= $redirect->getName() ?></td>
+                                    <td><?= $redirect->getSlug() ?></td>
+                                    <td><?= $redirect->getTarget() ?></td>
+                                    <td><?= $redirect->getClick() ?></td>
+                                    <td class="text-center">
+
+                                        <a href="../redirect/edit/<?= $redirect->getId() ?>"
+                                           class="btn btn-warning"><i class="fas fa-edit"></i></a>
+
+                                        <a href="delete/<?= $redirect->getId() ?>" type="submit"
+                                           class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+
+
+                                    </td>
                                 </tr>
-                                </thead>
+                            <?php endforeach; ?>
+                            </tbody>
 
-                                <tbody>
-                                <?php /** @var redirectModel[] $redirectList */
-                                foreach ($redirectList as $redirect) : ?>
-                                    <tr>
-                                        <td><?= $redirect['id'] ?></td>
-                                        <td><?= $redirect['name'] ?></td>
-                                        <td><?= $redirect['slug'] ?></td>
-                                        <td><?= $redirect['target'] ?></td>
-                                        <td><?= $redirect['click'] ?></td>
-                                        <td class="text-center">
+                            <tfoot>
+                            <tr>
+                                <th><?= REDIRECT_LIST_TABLE_ID ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_NAME ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_SLUG ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_TARGET ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_CLICK ?></th>
+                                <th><?= REDIRECT_LIST_TABLE_EDIT ?></th>
+                            </tr>
+                            </tfoot>
 
-                                            <button onclick="window.location.href='../redirect/edit/<?= $redirect['id'] ?>'"
-                                                    class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                        </table>
 
-                                            <a href="delete/<?= $redirect['id'] ?>" type="submit"
-                                               class="btn btn-danger">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
-
-
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                                </tbody>
-
-                                <tfoot>
-                                <tr>
-                                    <th><?= REDIRECT_LIST_TABLE_ID ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_NAME ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_SLUG ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_TARGET ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_CLICK ?></th>
-                                    <th><?= REDIRECT_LIST_TABLE_EDIT ?></th>
-                                </tr>
-                                </tfoot>
-
-                            </table>
-
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
+</div>
 
 <?php $content = ob_get_clean(); ?>

@@ -3,6 +3,7 @@ namespace CMW\Controller\Redirect;
 
 use CMW\Controller\CoreController;
 use CMW\Controller\users\UsersController;
+use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
 
 /**
@@ -16,18 +17,22 @@ class RedirectController extends CoreController
 {
 
     public static string $themePath;
+    private RedirectModel $redirectModel;
+    private RedirectLogsModel $redirectLogsModel;
 
     public function __construct($themePath = null)
     {
         parent::__construct($themePath);
+        $this->redirectModel = new RedirectModel();
+        $this->redirectLogsModel = new RedirectLogsModel();
     }
 
     public function frontRedirectListAdmin(){
         UsersController::isUserHasPermission("redirect.show");
-        $redirect = new RedirectModel();
+
 
         //Get all redirect
-        $redirectList = $redirect->fetchAll();
+        $redirectList = $this->redirectModel->getRedirects();
 
         $includes = array(
             "scripts" => [
@@ -48,13 +53,11 @@ class RedirectController extends CoreController
 
 
         //Include the view file ("views/list.admin.view.php").
-        view('redirect', 'list.admin', ["redirect" => $redirect, "redirectList" => $redirectList], 'admin', $includes);
+        view('redirect', 'list.admin', ["redirectList" => $redirectList], 'admin', $includes);
     }
 
     public function create(){
         UsersController::isUserHasPermission("redirect.create");
-
-        $redirect = new RedirectModel();
 
         $includes = array(
             "scripts" => [
@@ -70,10 +73,8 @@ class RedirectController extends CoreController
     public function createPost(){
         UsersController::isUserHasPermission("redirect.create");
 
-        $redirect = new RedirectModel();
 
-
-        if ($redirect->checkName(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING)) > 0){
+        if ($this->redirectModel->checkName(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING)) > 0){
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -81,7 +82,7 @@ class RedirectController extends CoreController
 
             header("location: ../redirect/add");
 
-        } elseif ($redirect->checkSlug(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING)) > 0){
+        } elseif ($this->redirectModel->checkSlug(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING)) > 0){
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -91,11 +92,11 @@ class RedirectController extends CoreController
         }
         else {
 
-            $redirect->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
-            $redirect->slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
-            $redirect->target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
+            $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+            $slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+            $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
-            $redirect->create();
+            $this->redirectModel->createRedirect($name, $slug, $target);
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_SUCCESS;
             $_SESSION['toaster'][0]['type'] = "bg-success";
@@ -109,8 +110,7 @@ class RedirectController extends CoreController
     public function edit($id){
         UsersController::isUserHasPermission("redirect.edit");
 
-        $redirect = new RedirectModel();
-        $redirect->fetch($id);
+        $redirect = $this->redirectModel->getRedirectById($id);
 
         $includes = array(
             "scripts" => [
@@ -127,31 +127,27 @@ class RedirectController extends CoreController
         UsersController::isUserHasPermission("redirect.edit");
 
 
-        $redirect = new RedirectModel();
-
-        $redirect->id = $id;
-
-        if ($redirect->checkNameEdit(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING), $id) > 0){
+        if ($this->redirectModel->checkNameEdit(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING), $id) > 0){
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_ERROR_NAME;
 
-            header("location: ../edit/".$redirect->id);
+            header("location: ../edit/". $id);
 
-        } elseif ($redirect->checkSlugEdit(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING), $id) > 0){
+        } elseif ($this->redirectModel->checkSlugEdit(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING), $id) > 0){
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_ERROR_SLUG;
 
-            header("location: ../edit/".$redirect->id);
+            header("location: ../edit/". $id);
         } else{
 
-            $redirect->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
-            $redirect->slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
-            $redirect->target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
+            $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+            $slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+            $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
-            $redirect->update();
+            $this->redirectModel->updateRedirect($id, $name, $slug, $target);
 
             $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_SUCCESS;
             $_SESSION['toaster'][0]['type'] = "bg-success";
@@ -165,10 +161,8 @@ class RedirectController extends CoreController
     public function delete($id){
         UsersController::isUserHasPermission("redirect.delete");
 
-        $redirect = new RedirectModel();
-        $redirect->id = $id;
 
-        $redirect->delete();
+        $this->redirectModel->deleteRedirect($id);
 
         $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_SUCCESS;
         $_SESSION['toaster'][0]['type'] = "bg-success";
@@ -179,15 +173,15 @@ class RedirectController extends CoreController
 
     public function stats(){
         UsersController::isUserHasPermission("redirect.stats");
-        $redirect = new RedirectModel();
 
-        $stats = $redirect->getStats();
 
-        $number = $redirect->getNumberOfLines();
+        $stats = $this->redirectModel->getRedirects();
 
-        $redirect->getTotalClicks();
+        $redirectionNumber = $this->redirectModel->getNumberOfLines();
 
-        $redirect->getAllClicks();
+        $totalClicks = $this->redirectModel->getTotalClicks();
+
+        $allClicks = $this->redirectLogsModel->getAllClicks();
 
         $includes = array(
             "scripts" => [
@@ -198,21 +192,17 @@ class RedirectController extends CoreController
             ]
         );
 
-        view('redirect', 'stats.admin', ["redirect" => $redirect, "stats" => $stats,
-            "number" => $number], 'admin', $includes);
+        view('redirect', 'stats.admin', ["allClicks" => $allClicks, "stats" => $stats,
+            "redirectionNumber" => $redirectionNumber, "totalClicks" => $totalClicks], 'admin', $includes);
     }
 
     /* //////////////////// PUBLIC //////////////////// */
 
     //Redirect
     public function redirect($slug){
-        $core = new CoreController();
+        $entity = $this->redirectModel->getRedirectBySlug($slug);
 
-        $redirect = new RedirectModel();
-
-        $redirect->fetchWithSlug($slug);
-
-        $redirect->redirect($redirect->id);
+        $this->redirectModel->redirect($entity->getId());
     }
 
 }
