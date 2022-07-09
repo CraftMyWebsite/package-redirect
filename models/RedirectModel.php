@@ -50,8 +50,8 @@ class RedirectModel extends Manager
 
         $toReturn = array();
 
-        while ($page = $res->fetch()) {
-            $toReturn[] = $this->getRedirectById($page["redirect_id"]);
+        while ($redirect = $res->fetch()) {
+            $toReturn[] = $this->getRedirectById($redirect["redirect_id"]);
         }
 
         return $toReturn;
