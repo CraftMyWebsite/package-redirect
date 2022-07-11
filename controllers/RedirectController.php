@@ -28,7 +28,7 @@ class RedirectController extends CoreController
     }
 
     public function frontRedirectListAdmin(){
-        UsersController::isUserHasPermission("redirect.show");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.show");
 
 
         //Get all redirect
@@ -57,7 +57,7 @@ class RedirectController extends CoreController
     }
 
     public function create(){
-        UsersController::isUserHasPermission("redirect.create");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
         $includes = array(
             "scripts" => [
@@ -71,7 +71,7 @@ class RedirectController extends CoreController
     }
 
     public function createPost(){
-        UsersController::isUserHasPermission("redirect.create");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
 
         if ($this->redirectModel->checkName(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING)) > 0){
@@ -108,7 +108,7 @@ class RedirectController extends CoreController
     }
 
     public function edit($id){
-        UsersController::isUserHasPermission("redirect.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
         $redirect = $this->redirectModel->getRedirectById($id);
 
@@ -124,7 +124,7 @@ class RedirectController extends CoreController
     }
 
     public function editPost($id){
-        UsersController::isUserHasPermission("redirect.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
 
         if ($this->redirectModel->checkNameEdit(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING), $id) > 0){
@@ -159,7 +159,7 @@ class RedirectController extends CoreController
     }
 
     public function delete($id){
-        UsersController::isUserHasPermission("redirect.delete");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.delete");
 
 
         $this->redirectModel->deleteRedirect($id);
@@ -172,7 +172,7 @@ class RedirectController extends CoreController
     }
 
     public function stats(){
-        UsersController::isUserHasPermission("redirect.stats");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.stats");
 
 
         $stats = $this->redirectModel->getRedirects();
