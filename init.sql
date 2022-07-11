@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS `cmw_redirect`
 
 CREATE TABLE IF NOT EXISTS `cmw_redirect_logs`
 (
-    `redirect_logs_id`          int(11)   NOT NULL,
-    `redirect_logs_redirect_id` int(11)            DEFAULT NULL,
-    `redirect_logs_date`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    'redirect_logs_client_ip' varchar(39) NOT NULL
+    `redirect_logs_id`          int(11)     NOT NULL,
+    `redirect_logs_redirect_id` int(11)     DEFAULT NULL,
+    `redirect_logs_date`        timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `redirect_logs_client_ip`   varchar(39) NOT NULL
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8mb4;
 
 ALTER TABLE `cmw_redirect`
     ADD PRIMARY KEY (`redirect_id`),
