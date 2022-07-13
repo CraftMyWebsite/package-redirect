@@ -3,8 +3,6 @@
 use CMW\Controller\redirect\RedirectController;
 use CMW\Router\Router;
 
-require_once('lang/'.getenv("LOCALE").'.php');
-
 /** @var $router Router Main router */
 
 //Admin pages
