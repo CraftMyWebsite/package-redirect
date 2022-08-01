@@ -3,8 +3,7 @@
 namespace CMW\Model\Redirect;
 
 use CMW\Entity\Redirect\RedirectEntity;
-use CMW\Model\Manager;
-
+use CMW\Manager\Database\DatabaseManager;
 
 /**
  * Class @redirectModel
@@ -12,7 +11,7 @@ use CMW\Model\Manager;
  * @author Teyir
  * @version 1.0
  */
-class RedirectModel extends Manager
+class RedirectModel extends DatabaseManager
 {
 
     public function createRedirect(string $name, string $slug, string $target): ?RedirectEntity
@@ -25,7 +24,7 @@ class RedirectModel extends Manager
 
         $sql = "INSERT INTO cmw_redirect (redirect_name, redirect_slug, redirect_target) VALUES (:name, :slug, :target)";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -41,7 +40,7 @@ class RedirectModel extends Manager
     {
 
         $sql = "SELECT * FROM cmw_redirect";
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -63,7 +62,7 @@ class RedirectModel extends Manager
 
         $sql = "SELECT * FROM cmw_redirect WHERE redirect_id=:id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("id" => $id))) {
@@ -87,7 +86,7 @@ class RedirectModel extends Manager
     {
         $sql = "SELECT * FROM cmw_redirect WHERE redirect_slug=:slug";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("slug" => $slug))) {
@@ -124,7 +123,7 @@ class RedirectModel extends Manager
 
         $sql = "UPDATE cmw_redirect SET redirect_name=:name, redirect_slug=:slug, redirect_target=:target WHERE redirect_id=:id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute($var))
@@ -138,7 +137,7 @@ class RedirectModel extends Manager
 
         $sql = "DELETE FROM cmw_redirect WHERE redirect_id=:id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -148,7 +147,7 @@ class RedirectModel extends Manager
 
         $sql = "UPDATE cmw_redirect SET redirect_click = redirect_click+1 WHERE redirect_id=:id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -167,7 +166,7 @@ class RedirectModel extends Manager
     public function getNumberOfLines(): int
     {
         $sql = "SELECT redirect_id FROM cmw_redirect";
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -185,7 +184,7 @@ class RedirectModel extends Manager
         $toReturn = 0;
 
         $sql = "SELECT SUM(redirect_click) FROM cmw_redirect";
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute()) {
@@ -204,7 +203,7 @@ class RedirectModel extends Manager
 
         $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute(array("name" => $name))) {
@@ -221,7 +220,7 @@ class RedirectModel extends Manager
 
         $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute(array("slug" => $slug))) {
@@ -242,7 +241,7 @@ class RedirectModel extends Manager
 
         $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name AND redirect_id != :id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -263,7 +262,7 @@ class RedirectModel extends Manager
 
         $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug AND redirect_id != :id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {

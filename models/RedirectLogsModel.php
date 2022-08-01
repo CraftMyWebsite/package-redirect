@@ -3,7 +3,7 @@
 namespace CMW\Model\Redirect;
 
 use CMW\Entity\Redirect\RedirectLogsEntity;
-use CMW\Model\Manager;
+use CMW\Manager\Database\DatabaseManager;
 
 /**
  * Class @redirectLogsModel
@@ -11,14 +11,14 @@ use CMW\Model\Manager;
  * @author Teyir
  * @version 1.0
  */
-class RedirectLogsModel extends Manager
+class RedirectLogsModel extends DatabaseManager
 {
     public function createLog($id): ?RedirectLogsEntity
     {
 
         $sql = "INSERT INTO cmw_redirect_logs (redirect_logs_redirect_id, redirect_logs_client_ip) VALUES (:redirect_id, :client_ip)";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute(array("redirect_id" => $id, "client_ip" => getClientIp()))) {
@@ -34,7 +34,7 @@ class RedirectLogsModel extends Manager
         $sql = "SELECT redirect_logs_id, redirect_logs_redirect_id, 
         DATE_FORMAT(redirect_logs_date, '%d/%m/%Y à %H:%i:%s') AS 'redirect_logs_date', redirect_logs_client_ip FROM cmw_redirect_logs WHERE redirect_logs_id = :id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("id" => $id))) {
@@ -54,7 +54,7 @@ class RedirectLogsModel extends Manager
     public function getAllClicks(): int
     {
         $sql = "SELECT redirect_logs_id FROM cmw_redirect_logs";
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute()) {
