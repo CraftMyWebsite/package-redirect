@@ -24,7 +24,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "INSERT INTO cmw_redirect (redirect_name, redirect_slug, redirect_target) VALUES (:name, :slug, :target)";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -40,7 +40,7 @@ class RedirectModel extends DatabaseManager
     {
 
         $sql = "SELECT * FROM cmw_redirect";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -62,7 +62,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "SELECT * FROM cmw_redirect WHERE redirect_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("id" => $id))) {
@@ -86,7 +86,7 @@ class RedirectModel extends DatabaseManager
     {
         $sql = "SELECT * FROM cmw_redirect WHERE redirect_slug=:slug";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("slug" => $slug))) {
@@ -123,7 +123,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "UPDATE cmw_redirect SET redirect_name=:name, redirect_slug=:slug, redirect_target=:target WHERE redirect_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var))
@@ -137,7 +137,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "DELETE FROM cmw_redirect WHERE redirect_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -147,7 +147,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "UPDATE cmw_redirect SET redirect_click = redirect_click+1 WHERE redirect_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -166,7 +166,7 @@ class RedirectModel extends DatabaseManager
     public function getNumberOfLines(): int
     {
         $sql = "SELECT redirect_id FROM cmw_redirect";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -184,7 +184,7 @@ class RedirectModel extends DatabaseManager
         $toReturn = 0;
 
         $sql = "SELECT SUM(redirect_click) FROM cmw_redirect";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute()) {
@@ -203,7 +203,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute(array("name" => $name))) {
@@ -220,7 +220,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute(array("slug" => $slug))) {
@@ -241,7 +241,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name AND redirect_id != :id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -262,7 +262,7 @@ class RedirectModel extends DatabaseManager
 
         $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug AND redirect_id != :id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
