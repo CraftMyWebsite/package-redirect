@@ -2,7 +2,7 @@
 
 namespace CMW\Controller\Redirect;
 
-use CMW\Controller\CoreController;
+use CMW\Controller\Core\CoreController;
 use CMW\Controller\users\UsersController;
 use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
