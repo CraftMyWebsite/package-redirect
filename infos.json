@@ -1,21 +1,25 @@
 {
   "name": "redirect",
-  "name_menu": "Redirect",
-  "icon_menu": "fas fa-directions",
-  "description": "Ajouter des redirections à votre site web",
-  "version": "1.0.0",
-  "author": "Teyir",
-  "url_menu": "",
-  "urls_submenu": {
-    "Liste":"redirect/list",
-    "Ajouter":"redirect/add",
-    "Statistiques":"redirect/stats"
-  },
-  "urls_submenu_en": {
-    "List":"redirect/list",
-    "Add":"redirect/add",
-    "Statistics":"redirect/stats"
-  },
+  "menus": [
+    {
+      "name_menu": "Redirect",
+      "icon_menu": "fas fa-directions",
+      "description": "Ajouter des redirections à votre site web",
+      "version": "1.0.0",
+      "author": "Teyir",
+      "url_menu": "",
+      "urls_submenu": {
+        "Liste": "redirect/list",
+        "Ajouter": "redirect/add",
+        "Statistiques": "redirect/stats"
+      },
+      "urls_submenu_en": {
+        "List": "redirect/list",
+        "Add": "redirect/add",
+        "Statistics": "redirect/stats"
+      }
+    }
+  ],
   "permissions": {
     "Afficher les redirections": "redirect.show",
     "Créer une redirection": "redirect.create",
