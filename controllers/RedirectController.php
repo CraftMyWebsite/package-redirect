@@ -71,30 +71,30 @@ class RedirectController extends CoreController
 
         if ($this->redirectModel->checkName(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING)) > 0) {
 
-            $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
+            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_ERROR_NAME;
+            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
 
             header("location: ../redirect/add");
 
-        } elseif ($this->redirectModel->checkSlug(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING)) > 0) {
+        } elseif ($this->redirectModel->checkSlug(filter_input(INPUT_POST, "slug")) > 0) {
 
-            $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
+            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_ERROR_SLUG;
+            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_SLUG";
 
             header("location: ../redirect/add");
         } else {
 
-            $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
-            $slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+            $name = filter_input(INPUT_POST, "name");
+            $slug = filter_input(INPUT_POST, "slug");
             $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
             $this->redirectModel->createRedirect($name, $slug, $target);
 
-            $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_SUCCESS;
+            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
             $_SESSION['toaster'][0]['type'] = "bg-success";
-            $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_SUCCESS;
+            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_SUCCESS";
 
             header("location: ../redirect/list");
         }
@@ -120,31 +120,31 @@ class RedirectController extends CoreController
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
 
-        if ($this->redirectModel->checkNameEdit(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING), $id) > 0) {
-            $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
+        if ($this->redirectModel->checkNameEdit(filter_input(INPUT_POST, "name"), $id) > 0) {
+            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_ERROR_NAME;
+            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
 
             header("location: ../edit/" . $id);
 
-        } elseif ($this->redirectModel->checkSlugEdit(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING), $id) > 0) {
+        } elseif ($this->redirectModel->checkSlugEdit(filter_input(INPUT_POST, "slug"), $id) > 0) {
 
-            $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_ERROR;
+            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_CREATE_ERROR_SLUG;
+            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_SLUG";
 
             header("location: ../edit/" . $id);
         } else {
 
-            $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
-            $slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+            $name = filter_input(INPUT_POST, "name", "FILTER_SANITIZE_STRING");
+            $slug = filter_input(INPUT_POST, "slug", "FILTER_SANITIZE_STRING");
             $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
             $this->redirectModel->updateRedirect($id, $name, $slug, $target);
 
-            $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_SUCCESS;
+            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
             $_SESSION['toaster'][0]['type'] = "bg-success";
-            $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_EDIT_SUCCESS;
+            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_EDIT_SUCCESS";
 
             header("location: ../list");
         }
@@ -159,9 +159,9 @@ class RedirectController extends CoreController
 
         $this->redirectModel->deleteRedirect($id);
 
-        $_SESSION['toaster'][0]['title'] = REDIRECT_TOAST_TITLE_SUCCESS;
+        $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
         $_SESSION['toaster'][0]['type'] = "bg-success";
-        $_SESSION['toaster'][0]['body'] = REDIRECT_TOAST_DELETE_SUCCESS;
+        $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_DELETE_SUCCESS";
 
         header("location: ../list");
     }
@@ -195,7 +195,7 @@ class RedirectController extends CoreController
     {
         $entity = $this->redirectModel->getRedirectBySlug($slug);
 
-        $this->redirectModel->redirect($entity->getId());
+        $this->redirectModel->redirect($entity?->getId());
     }
 
 }

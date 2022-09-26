@@ -126,8 +126,9 @@ class RedirectModel extends DatabaseManager
         $db = self::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute($var))
+        if ($req->execute($var)) {
             return $this->getRedirectById($id);
+        }
 
         return null;
     }
@@ -159,7 +160,7 @@ class RedirectModel extends DatabaseManager
         $this->addClick($id);
         (new RedirectLogsModel())->createLog($id);
 
-        header('Location: ' . $res->getTarget());
+        header('Location: ' . $res?->getTarget());
     }
 
 
