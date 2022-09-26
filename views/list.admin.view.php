@@ -1,34 +1,36 @@
 <?php
-$title = REDIRECT_DASHBOARD_TITLE;
-$description = REDIRECT_DASHBOARD_DESC;
+use CMW\Manager\Lang\LangManager;
+
+$title = LangManager::translate("redirect.dashboard.title");
+$description = LangManager::translate("redirect.dashboard.desc");
 
 $scripts = '
 <script>
     $(function () {
-        $("#redirect_table").DataTable({
+        $("#users_table").DataTable({
             "responsive": true, 
             "lengthChange": false, 
             "autoWidth": false,
             language: {
-                processing:     "' . CORE_DATATABLES_LIST_PROCESSING . '",
-                search:         "' . CORE_DATATABLES_LIST_SEARCH . '",
-                lengthMenu:     "' . CORE_DATATABLES_LIST_LENGTHMENU . '",
-                info:           "' . CORE_DATATABLES_LIST_INFO . '",
-                infoEmpty:      "' . CORE_DATATABLES_LIST_INFOEMPTY . '",
-                infoFiltered:   "' . CORE_DATATABLES_LIST_INFOFILTERED . '",
-                infoPostFix:    "' . CORE_DATATABLES_LIST_INFOPOSTFIX . '",
-                loadingRecords: "' . CORE_DATATABLES_LIST_LOADINGRECORDS . '",
-                zeroRecords:    "' . CORE_DATATABLES_LIST_ZERORECORDS . '",
-                emptyTable:     "' . CORE_DATATABLES_LIST_EMPTYTABLE . '",
+                processing:     "' . LangManager::translate("core.datatables.list.processing") . '",
+                search:         "' . LangManager::translate("core.datatables.list.search") . '",
+                lengthMenu:    "' . LangManager::translate("core.datatables.list.lenghtmenu") . '",
+                info:           "' . LangManager::translate("core.datatables.list.info") . '",
+                infoEmpty:      "' . LangManager::translate("core.datatables.list.info_empty") . '",
+                infoFiltered:   "' . LangManager::translate("core.datatables.list.info_filtered") . '",
+                infoPostFix:    "' . LangManager::translate("core.datatables.list.info_postfix") . '",
+                loadingRecords: "' . LangManager::translate("core.datatables.list.loadingrecords") . '",
+                zeroRecords:    "' . LangManager::translate("core.datatables.list.zerorecords") . '",
+                emptyTable:     "' . LangManager::translate("core.datatables.list.emptytable") . '",
                 paginate: {
-                    first:      "' . CORE_DATATABLES_LIST_FIRST . '",
-                    previous:   "' . CORE_DATATABLES_LIST_PREVIOUS . '",
-                    next:       "' . CORE_DATATABLES_LIST_NEXT . '",
-                    last:       "' . CORE_DATATABLES_LIST_LAST . '"
+                    first:      "' . LangManager::translate("core.datatables.list.first") . '",
+                    previous:   "' . LangManager::translate("core.datatables.list.previous") . '",
+                    next:       "' . LangManager::translate("core.datatables.list.next") . '",
+                    last:       "' . LangManager::translate("core.datatables.list.last") . '"
                 },
                 aria: {
-                    sortAscending:  "' . CORE_DATATABLES_LIST_SORTASCENDING . '",
-                    sortDescending: "' . CORE_DATATABLES_LIST_SORTDESCENDING . '"
+                    sortAscending:  "' . LangManager::translate("core.datatables.list.sort.ascending") . '",
+                    sortDescending: "' . LangManager::translate("core.datatables.list.sort.descending") . '"
                 }
             },
         });
@@ -44,7 +46,7 @@ $scripts = '
                 <div class="card">
 
                     <div class="card-header">
-                        <h3 class="card-title"><?= REDIRECT_DASHBOARD_TITLE ?></h3>
+                        <h3 class="card-title"><?= LangManager::translate("redirect.dashboard.title") ?></h3>
                     </div>
 
                     <div class="card-body">
@@ -53,12 +55,12 @@ $scripts = '
 
                             <thead>
                             <tr>
-                                <th><?= REDIRECT_LIST_TABLE_ID ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_NAME ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_SLUG ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_TARGET ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_CLICK ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_EDIT ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.id") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.name") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.slug") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.target") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.click") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.edit") ?></th>
                             </tr>
                             </thead>
 
@@ -89,12 +91,12 @@ $scripts = '
 
                             <tfoot>
                             <tr>
-                                <th><?= REDIRECT_LIST_TABLE_ID ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_NAME ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_SLUG ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_TARGET ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_CLICK ?></th>
-                                <th><?= REDIRECT_LIST_TABLE_EDIT ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.id") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.name") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.slug") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.target") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.click") ?></th>
+                                <th><?= LangManager::translate("redirect.list_table.edit") ?></th>
                             </tr>
                             </tfoot>
 

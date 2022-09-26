@@ -1,6 +1,9 @@
 <?php
-$title = REDIRECT_DASHBOARD_TITLE_STATS;
-$description = REDIRECT_DASHBOARD_DESC_STATS;
+
+use CMW\Manager\Lang\LangManager;
+
+$title = LangManager::translate("redirect.dashboard.title_stats");
+$description = LangManager::translate("redirect.dashboard.desc_stats");
 
 /* @var \CMW\Entity\Redirect\RedirectEntity[] $stats */
 /* @var \CMW\Model\Redirect\RedirectModel $redirectionNumber */
@@ -16,7 +19,7 @@ $description = REDIRECT_DASHBOARD_DESC_STATS;
                 <div class="inner">
                     <h3><?= number_format($redirectionNumber) ?></h3>
 
-                    <p><?= REDIRECT_DASHBOARD_STATS_NUMBER ?></p>
+                    <p><?= LangManager::translate("redirect.dashboard.stats_number") ?></p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-area"></i>
@@ -30,7 +33,7 @@ $description = REDIRECT_DASHBOARD_DESC_STATS;
                 <div class="inner">
                     <h3><?= number_format($totalClicks) ?></h3>
 
-                    <p><?= REDIRECT_DASHBOARD_STATS_CLICKS_ACTIVES ?></p>
+                    <p><?= LangManager::translate("redirect.dashboard.stats_clicks_actives") ?></p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-pie"></i>
@@ -44,7 +47,7 @@ $description = REDIRECT_DASHBOARD_DESC_STATS;
                 <div class="inner">
                     <h3><?= number_format($allClicks) ?></h3>
 
-                    <p><?= REDIRECT_DASHBOARD_STATS_CLICKS_TOTAUX ?></p>
+                    <p><?= LangManager::translate("redirect.dashboard.stats_clicks_total") ?></p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-line"></i>
@@ -61,7 +64,7 @@ $description = REDIRECT_DASHBOARD_DESC_STATS;
         <div class="col-6">
             <div class="card card-danger">
                 <div class="card-header">
-                    <h3 class="card-title"><?= REDIRECT_DASHBOARD_STATS_TITLE_CLICK ?></h3>
+                    <h3 class="card-title"><?= LangManager::translate("redirect.dashboard.stats_clicks_total") ?></h3>
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">

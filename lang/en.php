@@ -18,7 +18,7 @@ return[
 		"target_placeholder" => "Enter the url target ( ex: https://discord.gg/H2eNaZZ98b )",
 		"stats_title_click" => "Number of clicks per redirections",
 		"stats_number" => "Number of redirections",
-		"stats_clicks_totaux" => "Number of total clicks",
+		"stats_clicks_total" => "Number of total clicks",
 		"stats_clicks_actives" => "Number of total clicks active",
 	],
 	"list_table" => [
@@ -27,7 +27,7 @@ return[
 		"slug" => "Slug",
 		"target" => "Target",
 		"click" => "Clicks",
-		"Edit" => "Editing",
+		"edit" => "Editing",
 	],
 	"toast" => [
 		"title_success" => "Information",

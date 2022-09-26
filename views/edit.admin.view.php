@@ -1,6 +1,10 @@
 <?php
-$title = REDIRECT_DASHBOARD_TITLE_EDIT;
-$description = REDIRECT_DASHBOARD_DESC_EDIT;
+
+use CMW\Manager\Lang\LangManager;
+use CMW\Utils\Utils;
+
+$title = LangManager::translate("redirect.dashboard.title_edit");
+$description = LangManager::translate("redirect.dashboard.desc_edit");
 
 /* @var \CMW\Entity\Redirect\RedirectEntity $redirect */
 ?>
@@ -14,12 +18,12 @@ $description = REDIRECT_DASHBOARD_DESC_EDIT;
                         <div class="card card-primary">
 
                             <div class="card-header">
-                                <h3 class="card-title"><?= REDIRECT_DASHBOARD_TITLE_EDIT ?> :</h3>
+                                <h3 class="card-title"><?= LangManager::translate("redirect.dashboard.title_edit") ?> :</h3>
                             </div>
 
                             <div class="card-body">
 
-                                <label for="name"><?= REDIRECT_DASHBOARD_NAME ?></label>
+                                <label for="name"><?= LangManager::translate("redirect.dashboard.name") ?></label>
                                 <div class="input-group mb-3">
 
                                     <div class="input-group-prepend">
@@ -27,22 +31,22 @@ $description = REDIRECT_DASHBOARD_DESC_EDIT;
                                     </div>
                                     <input type="text" value="<?= $redirect->getName() ?>" name="name"
                                            class="form-control"
-                                           placeholder="<?= REDIRECT_DASHBOARD_NAME_PLACEHOLDER ?>" required>
+                                           placeholder="<?= LangManager::translate("redirect.dashboard.name_placeholder") ?>" required>
 
                                 </div>
 
-                                <label class="mt-4" for="slug"><?= REDIRECT_DASHBOARD_SLUG ?></label>
+                                <label class="mt-4" for="slug"><?= LangManager::translate("redirect.dashboard.slug") ?></label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><?= "https://" . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?></span>
+                                        <span class="input-group-text"><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?></span>
                                     </div>
                                     <input type="text" value="<?= $redirect->getSlug() ?>" name="slug"
                                            class="form-control"
-                                           placeholder="<?= REDIRECT_DASHBOARD_SLUG_PLACEHOLDER ?>" required>
+                                           placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>" required>
                                 </div>
-                                <small class="form-text"><?= REDIRECT_DASHBOARD_SLUG_HINT ?></small>
+                                <small class="form-text"><?= LangManager::translate("redirect.dashboard.slug_hint") ?></small>
 
-                                <label class="mt-4" for="target"><?= REDIRECT_DASHBOARD_TARGET ?></label>
+                                <label class="mt-4" for="target"><?= LangManager::translate("redirect.dashboard.target") ?></label>
                                 <div class="input-group mb-3">
 
                                     <div class="input-group-prepend">
@@ -50,7 +54,7 @@ $description = REDIRECT_DASHBOARD_DESC_EDIT;
                                     </div>
                                     <input type="text" value="<?= $redirect->getTarget() ?>" name="target"
                                            class="form-control"
-                                           placeholder="<?= REDIRECT_DASHBOARD_TARGET_PLACEHOLDER ?>" required>
+                                           placeholder="<?= LangManager::translate("redirect.dashboard.target_placeholder") ?>" required>
 
                                 </div>
 
@@ -59,7 +63,7 @@ $description = REDIRECT_DASHBOARD_DESC_EDIT;
 
                             <div class="card-footer">
                                 <button type="submit"
-                                        class="btn btn-primary float-right"><?= CORE_BTN_SAVE ?></button>
+                                        class="btn btn-primary float-right"><?= LangManager::translate("core.btn.save") ?></button>
                             </div>
 
                         </div>
