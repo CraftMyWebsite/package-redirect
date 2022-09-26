@@ -136,8 +136,8 @@ class RedirectController extends CoreController
             header("location: ../edit/" . $id);
         } else {
 
-            $name = filter_input(INPUT_POST, "name", "FILTER_SANITIZE_STRING");
-            $slug = filter_input(INPUT_POST, "slug", "FILTER_SANITIZE_STRING");
+            $name = filter_input(INPUT_POST, "name");
+            $slug = filter_input(INPUT_POST, "slug");
             $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
             $this->redirectModel->updateRedirect($id, $name, $slug, $target);
