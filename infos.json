@@ -19,12 +19,5 @@
         "Statistics": "redirect/stats"
       }
     }
-  ],
-  "permissions": {
-    "Afficher les redirections": "redirect.show",
-    "Créer une redirection": "redirect.create",
-    "Modifiez une redirection": "redirect.edit",
-    "Supprimez une redirection": "redirect.delete",
-    "Accédez aux stats des redirections": "redirect.stats"
-  }
+  ]
 }
