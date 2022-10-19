@@ -4,6 +4,7 @@ namespace CMW\Model\Redirect;
 
 use CMW\Entity\Redirect\RedirectLogsEntity;
 use CMW\Manager\Database\DatabaseManager;
+use CMW\Utils\Utils;
 
 /**
  * Class @redirectLogsModel
@@ -21,7 +22,7 @@ class RedirectLogsModel extends DatabaseManager
         $db = self::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute(array("redirect_id" => $id, "client_ip" => getClientIp()))) {
+        if ($req->execute(array("redirect_id" => $id, "client_ip" => Utils::getClientIp()))) {
             $id = $db->lastInsertId();
             return $this->getRedirectLogsById($id);
         }
