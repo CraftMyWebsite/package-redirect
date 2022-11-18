@@ -32,8 +32,8 @@ class RedirectLogsModel extends DatabaseManager
 
     public function getRedirectLogsById(int $id): ?RedirectLogsEntity
     {
-        $sql = "SELECT redirect_logs_id, redirect_logs_redirect_id, 
-        DATE_FORMAT(redirect_logs_date, '%d/%m/%Y à %H:%i:%s') AS 'redirect_logs_date', redirect_logs_client_ip FROM cmw_redirect_logs WHERE redirect_logs_id = :id";
+        $sql = "SELECT redirect_logs_id, redirect_logs_redirect_id, redirect_logs_date, redirect_logs_client_ip 
+                FROM cmw_redirect_logs WHERE redirect_logs_id = :id";
 
         $db = self::getInstance();
         $res = $db->prepare($sql);
