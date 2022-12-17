@@ -69,7 +69,7 @@ class RedirectController extends CoreController
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
 
-        if ($this->redirectModel->checkName(filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING)) > 0) {
+        if ($this->redirectModel->checkName(filter_input(INPUT_POST, "name")) > 0) {
 
             $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
