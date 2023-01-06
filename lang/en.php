@@ -2,10 +2,10 @@
 
 return[
 	"dashboard" => [
-		"title" => "Redirect - List",
-		"title_add" => "Redirect - Add a redirection",
-		"title_edit" => "Redirect - Edit a redirection",
-		"title_stats" => "Redirect - Stats",
+		"title" => "List",
+		"title_add" => "Add",
+		"title_edit" => "Edit",
+		"title_stats" => "Stats",
 		"desc" => "Manage your redirections",
 		"desc_edit" => "Edit a redirection",
 		"desc_stats" => "Stats of your redirections",

@@ -2,13 +2,13 @@
 
 return[
 	"dashboard" => [
-		"title" => "Redirect - Liste",
-		"title_add" => "Redirect - Ajouter une redirection",
-		"title_edit" => "Redirect - Modification d'une redirection",
-		"title_stats" => "Redirect - Statistiques",
-		"desc" => "Gestion des redirections de votre site",
-		"desc_edit" => "Modification d'une redirection",
-		"desc_stats" => "Statistiques de vos redirections",
+		"title" => "Liste",
+		"title_add" => "Ajouter",
+		"title_edit" => "Modification",
+		"title_stats" => "Statistiques",
+		"desc" => "Gestion des redirections",
+		"desc_edit" => "Modification",
+		"desc_stats" => "Statistiques",
 		"name" => "Nom",
 		"name_placeholder" => "Entrez le nom de votre redirection",
 		"slug" => "Slug",
@@ -27,7 +27,7 @@ return[
 		"slug" => "Slug",
 		"target" => "Cible",
 		"click" => "Cliques",
-		"edit" => "Modifications",
+		"edit" => "Actions",
 	],
 	"toast" => [
 		"title_success" => "Information",
