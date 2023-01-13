@@ -74,7 +74,7 @@ $description = LangManager::translate("redirect.dashboard.desc");
                         <tr>
                             <td><?= $redirect->getId() ?></td>
                             <td><?= $redirect->getName() ?></td>
-                            <td><?= $redirect->getSlug() ?></td>
+                            <td><a href="<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>" target="_blank"><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?></a></td>
                             <td><?= $redirect->getTarget() ?></td>
                             <td><?= $redirect->getClick() ?></td>
                             <td>

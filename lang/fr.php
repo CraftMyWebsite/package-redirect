@@ -17,9 +17,9 @@ return[
 		"target" => "Cible",
 		"target_placeholder" => "Entrez l'url cible ( ex: https://discord.gg/H2eNaZZ98b )",
 		"stats_title_click" => "Nombres de cliques par redirection",
-		"stats_number" => "Nombre de redirections",
-		"stats_clicks_total" => "Nombre de cliques totaux",
-		"stats_clicks_actives" => "Nombre de cliques totaux actifs",
+		"stats_number" => "redirections actives",
+		"stats_clicks_total" => "cliques totaux",
+		"stats_clicks_actives" => "cliques totaux actifs",
 	],
 	"list_table" => [
 		"id" => "ID",
