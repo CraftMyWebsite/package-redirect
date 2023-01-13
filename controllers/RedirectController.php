@@ -41,29 +41,24 @@ class RedirectController extends CoreController
 
 
         View::createAdminView('redirect', 'list')
-            ->addScriptBefore("admin/resources/vendors/bootstrap/js/bootstrap.bundle.min.js",
-                "admin/resources/vendors/datatables/jquery.dataTables.min.js",
-                "admin/resources/vendors/datatables-bs4/js/dataTables.bootstrap4.min.js",
-                "admin/resources/vendors/datatables-responsive/js/dataTables.responsive.min.js",
-                "admin/resources/vendors/datatables-responsive/js/responsive.bootstrap4.min.js",
-                "admin/resources/vendors/datatables-buttons/js/dataTables.buttons.min.js")
-            ->addStyle("admin/resources/vendors/datatables-bs4/css/dataTables.bootstrap4.min.css",
-                "admin/resources/vendors/datatables-responsive/css/responsive.bootstrap4.min.css")
+            ->addStyle("admin/resources/vendors/simple-datatables/style.css","admin/resources/assets/css/pages/simple-datatables.css")
+            ->addScriptAfter("admin/resources/vendors/simple-datatables/umd/simple-datatables.js",
+                "admin/resources/assets/js/pages/simple-datatables.js")
             ->addVariableList(["redirectList" => $redirectList])
             ->view();
     }
 
-    #[Link("/add", Link::GET, [], "/cmw-admin/redirect")]
+    #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
     public function create(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
-        View::createAdminView('redirect', 'add')
+        View::createAdminView('redirect', 'list')
             ->addScriptBefore("app/package/redirect/views/assets/js/main.js")
             ->view();
     }
 
-    #[Link("/add", Link::POST, [], "/cmw-admin/redirect")]
+    #[Link("/list", Link::POST, [], "/cmw-admin/redirect")]
     public function createPost(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
@@ -75,7 +70,7 @@ class RedirectController extends CoreController
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
 
-            header("location: ../redirect/add");
+            header("location: ../redirect/list");
 
         } elseif ($this->redirectModel->checkSlug(filter_input(INPUT_POST, "slug")) > 0) {
 
@@ -83,7 +78,7 @@ class RedirectController extends CoreController
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_SLUG";
 
-            header("location: ../redirect/add");
+            header("location: ../redirect/list");
         } else {
 
             $name = filter_input(INPUT_POST, "name");

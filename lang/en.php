@@ -2,10 +2,10 @@
 
 return[
 	"dashboard" => [
-		"title" => "Redirect - List",
-		"title_add" => "Redirect - Add a redirection",
-		"title_edit" => "Redirect - Edit a redirection",
-		"title_stats" => "Redirect - Stats",
+		"title" => "List",
+		"title_add" => "Add",
+		"title_edit" => "Edit",
+		"title_stats" => "Stats",
 		"desc" => "Manage your redirections",
 		"desc_edit" => "Edit a redirection",
 		"desc_stats" => "Stats of your redirections",
@@ -17,9 +17,9 @@ return[
 		"target" => "Target",
 		"target_placeholder" => "Enter the url target ( ex: https://discord.gg/H2eNaZZ98b )",
 		"stats_title_click" => "Number of clicks per redirections",
-		"stats_number" => "Number of redirections",
-		"stats_clicks_total" => "Number of total clicks",
-		"stats_clicks_actives" => "Number of total clicks active",
+		"stats_number" => "active redirections",
+		"stats_clicks_total" => " total clicks",
+		"stats_clicks_actives" => " total clicks active",
 	],
 	"list_table" => [
 		"id" => "ID",
