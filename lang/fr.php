@@ -21,6 +21,10 @@ return[
 		"stats_clicks_total" => "cliques totaux",
 		"stats_clicks_actives" => "cliques totaux actifs",
 	],
+	"modal" => [
+        "delete" => "Supression de :",
+        "deletealert" => "La supression est definitive.",
+    ],
 	"list_table" => [
 		"id" => "ID",
 		"name" => "Nom",
