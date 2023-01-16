@@ -21,6 +21,10 @@ return[
 		"stats_clicks_total" => " total clicks",
 		"stats_clicks_actives" => " total clicks active",
 	],
+	"modal" => [
+        "delete" => "Delete :",
+        "deletealert" => "The deletion is permanent.",
+    ],
 	"list_table" => [
 		"id" => "ID",
 		"name" => "Name",
