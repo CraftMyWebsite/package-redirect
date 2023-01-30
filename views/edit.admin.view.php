@@ -1,7 +1,7 @@
 <?php
 
 use CMW\Manager\Lang\LangManager;
-use CMW\Utils\SecurityService;
+use CMW\Manager\Security\SecurityManager;
 use CMW\Utils\Utils;
 
 $title = LangManager::translate("redirect.dashboard.title_edit");
@@ -25,7 +25,7 @@ $description = LangManager::translate("redirect.dashboard.desc_edit");
             </div>
             <div class="card-body">
                 <form id="edit" action="" method="post" enctype="multipart/form-data">
-                    <?php (new SecurityService())->insertHiddenToken() ?>
+                    <?php (new SecurityManager())->insertHiddenToken() ?>
                     <div class="row">
                         <div class="col-md-6">
                             <h6><?= LangManager::translate("redirect.dashboard.name") ?> :</h6>

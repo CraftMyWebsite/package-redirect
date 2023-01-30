@@ -1,6 +1,6 @@
 <?php
 use CMW\Manager\Lang\LangManager;
-use CMW\Utils\SecurityService;
+use CMW\Manager\Security\SecurityManager;
 use CMW\Utils\Utils;
 $title = LangManager::translate("redirect.dashboard.title");
 $description = LangManager::translate("redirect.dashboard.desc");
@@ -21,7 +21,7 @@ $description = LangManager::translate("redirect.dashboard.desc");
             </div>
             <div class="card-body">
                 <form method="post" action="">
-                    <?php (new SecurityService())->insertHiddenToken() ?>
+                    <?php (new SecurityManager())->insertHiddenToken() ?>
                     <h6><?= LangManager::translate("redirect.dashboard.name") ?> :</h6>
                     <div class="form-group position-relative has-icon-left">
                         <input type="text" class="form-control" name="name" required autocomplete="off"
