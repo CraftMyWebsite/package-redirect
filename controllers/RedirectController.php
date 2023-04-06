@@ -7,7 +7,7 @@ use CMW\Controller\users\UsersController;
 use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
 use CMW\Router\Link;
-use CMW\Utils\View;
+use CMW\Manager\Views\View;
 
 /**
  * Class: @redirectController
