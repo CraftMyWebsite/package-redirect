@@ -36,6 +36,9 @@ class RedirectModel extends DatabaseManager
 
     }
 
+    /**
+     * @return RedirectEntity[]
+     */
     public function getRedirects(): array
     {
 
