@@ -29,8 +29,8 @@ class RedirectController extends CoreController
         $this->redirectLogsModel = new RedirectLogsModel();
     }
 
-    #[Link(path: "/", method: Link::GET, scope: "/cmw-Admin/redirect")]
-    #[Link("/list", Link::GET, [], "/cmw-Admin/redirect")]
+    #[Link(path: "/", method: Link::GET, scope: "/cmw-admin/redirect")]
+    #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
     public function frontRedirectListAdmin(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.show");
@@ -48,7 +48,7 @@ class RedirectController extends CoreController
             ->view();
     }
 
-    #[Link("/list", Link::GET, [], "/cmw-Admin/redirect")]
+    #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
     public function create(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
@@ -58,7 +58,7 @@ class RedirectController extends CoreController
             ->view();
     }
 
-    #[Link("/list", Link::POST, [], "/cmw-Admin/redirect")]
+    #[Link("/list", Link::POST, [], "/cmw-admin/redirect")]
     public function createPost(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
@@ -96,7 +96,7 @@ class RedirectController extends CoreController
 
     }
 
-    #[Link("/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/redirect")]
+    #[Link("/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
     public function edit(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
@@ -109,7 +109,7 @@ class RedirectController extends CoreController
             ->view();
     }
 
-    #[Link("/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-Admin/redirect")]
+    #[Link("/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
     public function editPost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
@@ -146,7 +146,7 @@ class RedirectController extends CoreController
 
     }
 
-    #[Link("/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/redirect")]
+    #[Link("/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
     public function delete(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.delete");
@@ -161,7 +161,7 @@ class RedirectController extends CoreController
         header("location: ../list");
     }
 
-    #[Link("/stats", Link::GET, [], "/cmw-Admin/redirect")]
+    #[Link("/stats", Link::GET, [], "/cmw-admin/redirect")]
     public function stats(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.stats");
