@@ -4,6 +4,7 @@ namespace CMW\Controller\Redirect;
 
 use CMW\Controller\Core\CoreController;
 use CMW\Controller\users\UsersController;
+use CMW\Manager\Requests\Request;
 use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
 use CMW\Router\Link;
@@ -97,7 +98,7 @@ class RedirectController extends CoreController
     }
 
     #[Link("/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    public function edit(int $id): void
+    public function edit(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
@@ -110,7 +111,7 @@ class RedirectController extends CoreController
     }
 
     #[Link("/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    public function editPost(int $id): void
+    public function editPost(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
@@ -147,7 +148,7 @@ class RedirectController extends CoreController
     }
 
     #[Link("/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    public function delete(int $id): void
+    public function delete(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.delete");
 
@@ -186,7 +187,7 @@ class RedirectController extends CoreController
 
     //Redirect
     #[Link("/r/:slug", Link::GET, ["slug" => ".*?"])]
-    public function redirect(string $slug): void
+    public function redirect(Request $request, string $slug): void
     {
         $entity = $this->redirectModel->getRedirectBySlug($slug);
 
