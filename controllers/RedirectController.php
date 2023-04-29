@@ -29,8 +29,8 @@ class RedirectController extends CoreController
         $this->redirectLogsModel = new RedirectLogsModel();
     }
 
-    #[Link(path: "/", method: Link::GET, scope: "/cmw-admin/redirect")]
-    #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
+    #[Link(path: "/", method: Link::GET, scope: "/cmw-Admin/redirect")]
+    #[Link("/list", Link::GET, [], "/cmw-Admin/redirect")]
     public function frontRedirectListAdmin(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.show");
@@ -41,24 +41,24 @@ class RedirectController extends CoreController
 
 
         View::createAdminView('redirect', 'list')
-            ->addStyle("admin/resources/vendors/simple-datatables/style.css","admin/resources/assets/css/pages/simple-datatables.css")
-            ->addScriptAfter("admin/resources/vendors/simple-datatables/umd/simple-datatables.js",
-                "admin/resources/assets/js/pages/simple-datatables.js")
+            ->addStyle("Admin/Resources/Vendors/Simple-datatables/style.css","Admin/Resources/Assets/Css/Pages/simple-datatables.css")
+            ->addScriptAfter("Admin/Resources/Vendors/Simple-datatables/Umd/simple-datatables.js",
+                "Admin/Resources/Assets/Js/Pages/simple-datatables.js")
             ->addVariableList(["redirectList" => $redirectList])
             ->view();
     }
 
-    #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
+    #[Link("/list", Link::GET, [], "/cmw-Admin/redirect")]
     public function create(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
         View::createAdminView('redirect', 'list')
-            ->addScriptBefore("app/package/redirect/views/assets/js/main.js")
+            ->addScriptBefore("App/Package/redirect/Views/Assets/Js/main.js")
             ->view();
     }
 
-    #[Link("/list", Link::POST, [], "/cmw-admin/redirect")]
+    #[Link("/list", Link::POST, [], "/cmw-Admin/redirect")]
     public function createPost(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
@@ -96,7 +96,7 @@ class RedirectController extends CoreController
 
     }
 
-    #[Link("/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
+    #[Link("/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/redirect")]
     public function edit(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
@@ -104,12 +104,12 @@ class RedirectController extends CoreController
         $redirect = $this->redirectModel->getRedirectById($id);
 
         View::createAdminView('redirect', 'edit')
-            ->addScriptBefore("app/package/redirect/views/assets/js/main.js")
+            ->addScriptBefore("App/Package/redirect/Views/Assets/Js/main.js")
             ->addVariableList(["redirect" => $redirect])
             ->view();
     }
 
-    #[Link("/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
+    #[Link("/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-Admin/redirect")]
     public function editPost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
@@ -146,7 +146,7 @@ class RedirectController extends CoreController
 
     }
 
-    #[Link("/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
+    #[Link("/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/redirect")]
     public function delete(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.delete");
@@ -161,7 +161,7 @@ class RedirectController extends CoreController
         header("location: ../list");
     }
 
-    #[Link("/stats", Link::GET, [], "/cmw-admin/redirect")]
+    #[Link("/stats", Link::GET, [], "/cmw-Admin/redirect")]
     public function stats(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.stats");
@@ -177,7 +177,7 @@ class RedirectController extends CoreController
 
 
         View::createAdminView('redirect', 'stats')
-            ->addScriptBefore("admin/resources/vendors/chart/chart.min.js", "app/package/redirect/views/assets/js/main.js")
+            ->addScriptBefore("Admin/Resources/Vendors/chart/chart.min.js", "App/Package/redirect/Views/Assets/Js/main.js")
             ->addVariableList(["allClicks" => $allClicks, "stats" => $stats, "redirectionNumber" => $redirectionNumber, "totalClicks" => $totalClicks])
             ->view();
     }
