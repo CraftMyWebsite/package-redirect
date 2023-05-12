@@ -8,10 +8,11 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
 /* @var \CMW\Entity\Redirect\RedirectEntity[] $stats */
 /* @var \CMW\Model\Redirect\RedirectModel $redirectionNumber */
 /* @var \CMW\Model\Redirect\RedirectModel $totalClicks */
-/* @var \CMW\Entity\Redirect\RedirectEntity[] $allClicks */?>
+/* @var \CMW\Entity\Redirect\RedirectEntity[] $allClicks */ ?>
 
 <div class="d-flex flex-wrap justify-content-between">
-    <h3><i class="fas fa-chart-area"></i> <span class="m-lg-auto"><?= LangManager::translate("redirect.dashboard.title_stats") ?></span></h3>
+    <h3><i class="fas fa-chart-area"></i> <span
+            class="m-lg-auto"><?= LangManager::translate("redirect.dashboard.title_stats") ?></span></h3>
 </div>
 
 <section class="row">
@@ -23,14 +24,14 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
                 </div>
             </div>
             <div class="card-body">
-                <div class="chartjs-size-monitor" >
-                        <div class="chartjs-size-monitor-expand">
-                            <div class=""></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink">
-                            <div class=""></div>
-                        </div>
+                <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand">
+                        <div class=""></div>
                     </div>
+                    <div class="chartjs-size-monitor-shrink">
+                        <div class=""></div>
+                    </div>
+                </div>
                 <canvas id="chartGlobal"></canvas>
             </div>
         </div>
@@ -44,17 +45,23 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
                 <div class="row">
                     <div class="col-6">
                         <div class="alert alert-primary">
-                            <h4 class="alert-heading text-center"><?= number_format($redirectionNumber) ?> <span style="font-size: smaller;"><?= LangManager::translate("redirect.dashboard.stats_number") ?></span></h4>  
+                            <h4 class="alert-heading text-center"><?= number_format($redirectionNumber) ?> <span
+                                    style="font-size: smaller;"><?= LangManager::translate("redirect.dashboard.stats_number") ?></span>
+                            </h4>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="alert alert-primary text-center">
-                            <h4 class="alert-heading"><?= number_format($totalClicks) ?> <span style="font-size: smaller;"><?= LangManager::translate("redirect.dashboard.stats_clicks_actives") ?></span></h4>
+                            <h4 class="alert-heading"><?= number_format($totalClicks) ?> <span
+                                    style="font-size: smaller;"><?= LangManager::translate("redirect.dashboard.stats_clicks_actives") ?></span>
+                            </h4>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="alert alert-primary text-center">
-                            <h4 class="alert-heading"><?= number_format($allClicks) ?> <span style="font-size: smaller;"><?= LangManager::translate("redirect.dashboard.stats_clicks_total") ?></span></h4>
+                            <h4 class="alert-heading"><?= number_format($allClicks) ?> <span
+                                    style="font-size: smaller;"><?= LangManager::translate("redirect.dashboard.stats_clicks_total") ?></span>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -66,14 +73,18 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
 
 <script>
     //Chart config
-    var ctx = document.getElementById('chartGlobal').getContext('2d');
-    var myChart = new Chart(ctx, {
+    let ctx = document.getElementById('chartGlobal').getContext('2d');
+    let myChart = new Chart(ctx, {
         type: 'pie',
         data: {
             //website name
             labels: [
                 <?php foreach ($stats as $items):?>
-                <?=json_encode($items->getName()) . ","?>
+                <?php try {
+                echo json_encode($items->getName(), JSON_THROW_ON_ERROR) . ",";
+            } catch (JsonException $e) {
+                echo $e;
+            }?>
                 <?php endforeach;?>
             ],
             datasets: [{
@@ -81,7 +92,11 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
 
                 data: [
                     <?php foreach ($stats as $items):?>
-                    <?=json_encode($items->getClick()) . ","?>
+                    <?php try {
+                    echo json_encode($items->getClick(), JSON_THROW_ON_ERROR) . ",";
+                } catch (JsonException $e) {
+                    echo $e;
+                }?>
                     <?php endforeach;?>
                 ],
                 //Color (random)
