@@ -1,16 +1,19 @@
 <?php
+
+use CMW\Manager\Env\EnvManager;
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Security\SecurityManager;
-use CMW\Utils\Utils;
+use CMW\Utils\Website;
+
 $title = LangManager::translate("redirect.dashboard.title");
 $description = LangManager::translate("redirect.dashboard.desc");
 
 ?>
 
 
-
 <div class="d-flex flex-wrap justify-content-between">
-    <h3><i class="fa-solid fa-sliders"></i> <span class="m-lg-auto"><?= LangManager::translate("redirect.dashboard.desc") ?></span></h3>
+    <h3><i class="fa-solid fa-sliders"></i> <span
+            class="m-lg-auto"><?= LangManager::translate("redirect.dashboard.desc") ?></span></h3>
 </div>
 
 <section class="row">
@@ -32,8 +35,10 @@ $description = LangManager::translate("redirect.dashboard.desc");
                     </div>
                     <h6><?= LangManager::translate("redirect.dashboard.slug") ?> :</h6>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" ><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?></span>
-                        <input type="text" name="slug" class="form-control" placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>">
+                        <span
+                            class="input-group-text"><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?></span>
+                        <input type="text" name="slug" class="form-control"
+                               placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>">
                     </div>
                     <h6><?= LangManager::translate("redirect.dashboard.target") ?> :</h6>
                     <div class="form-group position-relative has-icon-left">
@@ -74,23 +79,31 @@ $description = LangManager::translate("redirect.dashboard.desc");
                         <tr>
                             <td><?= $redirect->getId() ?></td>
                             <td><?= $redirect->getName() ?></td>
-                            <td><a href="<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>" target="_blank"><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?></a></td>
+                            <td>
+                                <a href="<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>"
+                                   target="_blank">
+                                    <?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>
+                                </a>
+                            </td>
                             <td><?= $redirect->getTarget() ?></td>
                             <td><?= $redirect->getClick() ?></td>
                             <td>
                                 <a href="../redirect/edit/<?= $redirect->getId() ?>">
                                     <i class="text-primary me-3 fas fa-edit"></i>
                                 </a>
-                                <a type="button" data-bs-toggle="modal" data-bs-target="#delete-<?= $redirect->getId() ?>">
+                                <a type="button" data-bs-toggle="modal"
+                                   data-bs-target="#delete-<?= $redirect->getId() ?>">
                                     <i class="text-danger fas fa-trash-alt"></i>
                                 </a>
                             </td>
                         </tr>
-                        <div class="modal fade text-left" id="delete-<?= $redirect->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+                        <div class="modal fade text-left" id="delete-<?= $redirect->getId() ?>" tabindex="-1"
+                             role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header bg-danger">
-                                        <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("redirect.modal.delete") ?> <?= $redirect->getName() ?></h5>
+                                        <h5 class="modal-title white"
+                                            id="myModalLabel160"><?= LangManager::translate("redirect.modal.delete") ?> <?= $redirect->getName() ?></h5>
                                     </div>
                                     <div class="modal-body">
                                         <?= LangManager::translate("redirect.modal.deletealert") ?>
@@ -98,12 +111,14 @@ $description = LangManager::translate("redirect.dashboard.desc");
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                                             <i class="bx bx-x d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
+                                            <span
+                                                class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
                                         </button>
                                         <a href="delete/<?= $redirect->getId() ?>" class="btn btn-danger ml-1">
                                             <i class="bx bx-check d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
-                                        </a>                                
+                                            <span
+                                                class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

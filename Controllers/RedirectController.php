@@ -5,9 +5,9 @@ namespace CMW\Controller\Redirect;
 use CMW\Manager\Package\AbstractController;
 use CMW\Controller\users\UsersController;
 use CMW\Manager\Requests\Request;
+use CMW\Manager\Router\Link;
 use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
-use CMW\Router\Link;
 use CMW\Manager\Views\View;
 
 /**
@@ -161,7 +161,7 @@ class RedirectController extends AbstractController
 
         $totalClicks = redirectModel::getInstance()->getTotalClicks();
 
-        $allClicks = redirectModel::getInstance()->getAllClicks();
+        $allClicks = redirectLogsModel::getInstance()->getAllClicks();
 
 
         View::createAdminView('Redirect', 'stats')
