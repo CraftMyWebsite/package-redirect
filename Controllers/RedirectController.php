@@ -2,7 +2,7 @@
 
 namespace CMW\Controller\Redirect;
 
-use CMW\Controller\Core\CoreController;
+use CMW\Manager\Package\AbstractController;
 use CMW\Controller\users\UsersController;
 use CMW\Manager\Requests\Request;
 use CMW\Model\Redirect\RedirectLogsModel;
@@ -16,32 +16,19 @@ use CMW\Manager\Views\View;
  * @author Teyir
  * @version 1.0
  */
-class RedirectController extends CoreController
+class RedirectController extends AbstractController
 {
-
-    public static string $themePath;
-    private RedirectModel $redirectModel;
-    private RedirectLogsModel $redirectLogsModel;
-
-    public function __construct($themePath = null)
-    {
-        parent::__construct($themePath);
-        $this->redirectModel = new RedirectModel();
-        $this->redirectLogsModel = new RedirectLogsModel();
-    }
-
     #[Link(path: "/", method: Link::GET, scope: "/cmw-admin/redirect")]
     #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
-    public function frontRedirectListAdmin(): void
+    private function frontRedirectListAdmin(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.show");
 
-
         //Get all redirect
-        $redirectList = $this->redirectModel->getRedirects();
+        $redirectList = redirectModel::getInstance()->getRedirects();
 
 
-        View::createAdminView('redirect', 'list')
+        View::createAdminView('Redirect', 'list')
             ->addStyle("Admin/Resources/Vendors/Simple-datatables/style.css","Admin/Resources/Assets/Css/Pages/simple-datatables.css")
             ->addScriptAfter("Admin/Resources/Vendors/Simple-datatables/Umd/simple-datatables.js",
                 "Admin/Resources/Assets/Js/Pages/simple-datatables.js")
@@ -50,22 +37,22 @@ class RedirectController extends CoreController
     }
 
     #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
-    public function create(): void
+    private function create(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
-        View::createAdminView('redirect', 'list')
+        View::createAdminView('Redirect', 'list')
             ->addScriptBefore("App/Package/redirect/Views/Assets/Js/main.js")
             ->view();
     }
 
     #[Link("/list", Link::POST, [], "/cmw-admin/redirect")]
-    public function createPost(): void
+    private function createPost(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
 
-        if ($this->redirectModel->checkName(filter_input(INPUT_POST, "name")) > 0) {
+        if (redirectModel::getInstance()->checkName(filter_input(INPUT_POST, "name")) > 0) {
 
             $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -73,7 +60,7 @@ class RedirectController extends CoreController
 
             header("location: ../redirect/list");
 
-        } elseif ($this->redirectModel->checkSlug(filter_input(INPUT_POST, "slug")) > 0) {
+        } elseif (redirectModel::getInstance()->checkSlug(filter_input(INPUT_POST, "slug")) > 0) {
 
             $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -86,7 +73,7 @@ class RedirectController extends CoreController
             $slug = filter_input(INPUT_POST, "slug");
             $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
-            $this->redirectModel->createRedirect($name, $slug, $target);
+            redirectModel::getInstance()->createRedirect($name, $slug, $target);
 
             $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
             $_SESSION['toaster'][0]['type'] = "bg-success";
@@ -98,32 +85,32 @@ class RedirectController extends CoreController
     }
 
     #[Link("/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    public function edit(Request $request, int $id): void
+    private function edit(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
-        $redirect = $this->redirectModel->getRedirectById($id);
+        $redirect = redirectModel::getInstance()->getRedirectById($id);
 
-        View::createAdminView('redirect', 'edit')
+        View::createAdminView('Redirect', 'edit')
             ->addScriptBefore("App/Package/redirect/Views/Assets/Js/main.js")
             ->addVariableList(["redirect" => $redirect])
             ->view();
     }
 
     #[Link("/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    public function editPost(Request $request, int $id): void
+    private function editPost(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
 
-        if ($this->redirectModel->checkNameEdit(filter_input(INPUT_POST, "name"), $id) > 0) {
+        if (redirectModel::getInstance()->checkNameEdit(filter_input(INPUT_POST, "name"), $id) > 0) {
             $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
 
             header("location: ../edit/" . $id);
 
-        } elseif ($this->redirectModel->checkSlugEdit(filter_input(INPUT_POST, "slug"), $id) > 0) {
+        } elseif (redirectModel::getInstance()->checkSlugEdit(filter_input(INPUT_POST, "slug"), $id) > 0) {
 
             $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
             $_SESSION['toaster'][0]['type'] = "bg-danger";
@@ -136,7 +123,7 @@ class RedirectController extends CoreController
             $slug = filter_input(INPUT_POST, "slug");
             $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
 
-            $this->redirectModel->updateRedirect($id, $name, $slug, $target);
+            redirectModel::getInstance()->updateRedirect($id, $name, $slug, $target);
 
             $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
             $_SESSION['toaster'][0]['type'] = "bg-success";
@@ -148,12 +135,12 @@ class RedirectController extends CoreController
     }
 
     #[Link("/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    public function delete(Request $request, int $id): void
+    private function delete(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.delete");
 
 
-        $this->redirectModel->deleteRedirect($id);
+        redirectModel::getInstance()->deleteRedirect($id);
 
         $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
         $_SESSION['toaster'][0]['type'] = "bg-success";
@@ -163,21 +150,21 @@ class RedirectController extends CoreController
     }
 
     #[Link("/stats", Link::GET, [], "/cmw-admin/redirect")]
-    public function stats(): void
+    private function stats(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.stats");
 
 
-        $stats = $this->redirectModel->getRedirects();
+        $stats = redirectModel::getInstance()->getRedirects();
 
-        $redirectionNumber = $this->redirectModel->getNumberOfLines();
+        $redirectionNumber = redirectModel::getInstance()->getNumberOfLines();
 
-        $totalClicks = $this->redirectModel->getTotalClicks();
+        $totalClicks = redirectModel::getInstance()->getTotalClicks();
 
-        $allClicks = $this->redirectLogsModel->getAllClicks();
+        $allClicks = redirectModel::getInstance()->getAllClicks();
 
 
-        View::createAdminView('redirect', 'stats')
+        View::createAdminView('Redirect', 'stats')
             ->addScriptBefore("Admin/Resources/Vendors/chart/chart.min.js", "App/Package/redirect/Views/Assets/Js/main.js")
             ->addVariableList(["allClicks" => $allClicks, "stats" => $stats, "redirectionNumber" => $redirectionNumber, "totalClicks" => $totalClicks])
             ->view();
@@ -187,11 +174,11 @@ class RedirectController extends CoreController
 
     //Redirect
     #[Link("/r/:slug", Link::GET, ["slug" => ".*?"])]
-    public function redirect(Request $request, string $slug): void
+    private function redirect(Request $request, string $slug): void
     {
-        $entity = $this->redirectModel->getRedirectBySlug($slug);
+        $entity = redirectModel::getInstance()->getRedirectBySlug($slug);
 
-        $this->redirectModel->redirect($entity?->getId());
+        redirectModel::getInstance()->redirect($entity?->getId());
     }
 
 }
