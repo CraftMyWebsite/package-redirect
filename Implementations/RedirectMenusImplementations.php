@@ -13,7 +13,7 @@ class RedirectMenusImplementations implements IMenus {
         $redirections = [];
 
         foreach ((new RedirectModel())->getRedirects() as $redirect) {
-            $redirections = "r/" . $redirect->getSlug();
+            $redirections[$redirect->getName()] = "r/" . $redirect->getSlug();
         }
         
         return $redirections;
