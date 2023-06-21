@@ -9,6 +9,7 @@ use CMW\Manager\Router\Link;
 use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
 use CMW\Manager\Views\View;
+use CMW\Utils\Redirect;
 
 /**
  * Class: @redirectController
@@ -58,7 +59,7 @@ class RedirectController extends AbstractController
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
 
-            header("location: ../redirect/list");
+            Redirect::redirectPreviousRoute();
 
         } elseif (redirectModel::getInstance()->checkSlug(filter_input(INPUT_POST, "slug")) > 0) {
 
@@ -66,7 +67,7 @@ class RedirectController extends AbstractController
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_SLUG";
 
-            header("location: ../redirect/list");
+            Redirect::redirectPreviousRoute();
         } else {
 
             $name = filter_input(INPUT_POST, "name");
@@ -79,7 +80,7 @@ class RedirectController extends AbstractController
             $_SESSION['toaster'][0]['type'] = "bg-success";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_SUCCESS";
 
-            header("location: ../redirect/list");
+            Redirect::redirectPreviousRoute();
         }
 
     }
@@ -108,7 +109,7 @@ class RedirectController extends AbstractController
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
 
-            header("location: ../edit/" . $id);
+            Redirect::redirect("../edit/" . $id);
 
         } elseif (redirectModel::getInstance()->checkSlugEdit(filter_input(INPUT_POST, "slug"), $id) > 0) {
 
@@ -116,7 +117,7 @@ class RedirectController extends AbstractController
             $_SESSION['toaster'][0]['type'] = "bg-danger";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_SLUG";
 
-            header("location: ../edit/" . $id);
+            Redirect::redirect("../edit/" . $id);
         } else {
 
             $name = filter_input(INPUT_POST, "name");
@@ -129,7 +130,7 @@ class RedirectController extends AbstractController
             $_SESSION['toaster'][0]['type'] = "bg-success";
             $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_EDIT_SUCCESS";
 
-            header("location: ../list");
+            Redirect::redirectPreviousRoute();
         }
 
     }
@@ -146,7 +147,7 @@ class RedirectController extends AbstractController
         $_SESSION['toaster'][0]['type'] = "bg-success";
         $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_DELETE_SUCCESS";
 
-        header("location: ../list");
+        Redirect::redirectPreviousRoute();
     }
 
     #[Link("/stats", Link::GET, [], "/cmw-admin/redirect")]
