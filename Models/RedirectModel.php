@@ -5,6 +5,7 @@ namespace CMW\Model\Redirect;
 use CMW\Entity\Redirect\RedirectEntity;
 use CMW\Manager\Database\DatabaseManager;
 use CMW\Manager\Package\AbstractModel;
+use CMW\Utils\Redirect;
 
 /**
  * Class @redirectModel
@@ -111,9 +112,7 @@ class RedirectModel extends AbstractModel
             );
         }
 
-        header("location: " . getenv("PATH_SUBFOLDER"));
-
-        return null;
+        Redirect::redirectToHome();
     }
 
     public function updateRedirect(int $id, string $name, string $slug, string $target): ?RedirectEntity
@@ -164,6 +163,7 @@ class RedirectModel extends AbstractModel
         $this->addClick($id);
         (new RedirectLogsModel())->createLog($id);
 
+        http_response_code(302);
         header('Location: ' . $res?->getTarget());
     }
 
