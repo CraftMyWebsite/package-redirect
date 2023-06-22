@@ -1,5 +1,6 @@
 <?php
 
+use CMW\Manager\Env\EnvManager;
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Security\SecurityManager;
 use CMW\Utils\Website;
@@ -43,7 +44,7 @@ $description = LangManager::translate("redirect.dashboard.desc_edit");
                             <h6><?= LangManager::translate("redirect.dashboard.slug") ?> :</h6>
                             <div class="input-group mb-3">
                                 <span
-                                    class="input-group-text"><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "r/" ?></span>
+                                    class="input-group-text"><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?></span>
                                 <input type="text" name="slug" value="<?= $redirect->getSlug() ?>"
                                        placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>"
                                        class="form-control">
