@@ -166,7 +166,7 @@ class RedirectController extends AbstractController
 
 
         View::createAdminView('Redirect', 'stats')
-            ->addScriptBefore("Admin/Resources/Vendors/chart/chart.min.js", "App/Package/redirect/Views/Assets/Js/main.js")
+            ->addScriptBefore("Admin/Resources/Vendors/Chart/chart.min.js", "App/Package/Redirect/Views/Assets/Js/main.js")
             ->addVariableList(["allClicks" => $allClicks, "stats" => $stats, "redirectionNumber" => $redirectionNumber, "totalClicks" => $totalClicks])
             ->view();
     }
