@@ -2,6 +2,9 @@
 
 namespace CMW\Controller\Redirect;
 
+use CMW\Manager\Flash\Alert;
+use CMW\Manager\Flash\Flash;
+use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
 use CMW\Controller\users\UsersController;
 use CMW\Manager\Requests\Request;
@@ -30,7 +33,7 @@ class RedirectController extends AbstractController
 
 
         View::createAdminView('Redirect', 'list')
-            ->addStyle("Admin/Resources/Vendors/Simple-datatables/style.css","Admin/Resources/Assets/Css/Pages/simple-datatables.css")
+            ->addStyle("Admin/Resources/Vendors/Simple-datatables/style.css", "Admin/Resources/Assets/Css/Pages/simple-datatables.css")
             ->addScriptAfter("Admin/Resources/Vendors/Simple-datatables/Umd/simple-datatables.js",
                 "Admin/Resources/Assets/Js/Pages/simple-datatables.js")
             ->addVariableList(["redirectList" => $redirectList])
@@ -55,17 +58,15 @@ class RedirectController extends AbstractController
 
         if (redirectModel::getInstance()->checkName(filter_input(INPUT_POST, "name")) > 0) {
 
-            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
-            $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
+            Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
+                LangManager::translate("redirect.toast.create_error_name"));
 
             Redirect::redirectPreviousRoute();
 
         } elseif (redirectModel::getInstance()->checkSlug(filter_input(INPUT_POST, "slug")) > 0) {
 
-            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
-            $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_SLUG";
+            Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
+                LangManager::translate("redirect.toast.create_error_slug"));
 
             Redirect::redirectPreviousRoute();
         } else {
@@ -76,9 +77,8 @@ class RedirectController extends AbstractController
 
             redirectModel::getInstance()->createRedirect($name, $slug, $target);
 
-            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
-            $_SESSION['toaster'][0]['type'] = "bg-success";
-            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_SUCCESS";
+            Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
+                LangManager::translate("redirect.toast.create_success"));
 
             Redirect::redirectPreviousRoute();
         }
@@ -105,17 +105,16 @@ class RedirectController extends AbstractController
 
 
         if (redirectModel::getInstance()->checkNameEdit(filter_input(INPUT_POST, "name"), $id) > 0) {
-            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
-            $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_NAME";
+            Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
+                LangManager::translate("redirect.toast.create_error_name"));
+
 
             Redirect::redirect("../edit/" . $id);
 
         } elseif (redirectModel::getInstance()->checkSlugEdit(filter_input(INPUT_POST, "slug"), $id) > 0) {
 
-            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_ERROR";
-            $_SESSION['toaster'][0]['type'] = "bg-danger";
-            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_CREATE_ERROR_SLUG";
+            Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
+                LangManager::translate("redirect.toast.create_error_slug"));
 
             Redirect::redirect("../edit/" . $id);
         } else {
@@ -126,9 +125,8 @@ class RedirectController extends AbstractController
 
             redirectModel::getInstance()->updateRedirect($id, $name, $slug, $target);
 
-            $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
-            $_SESSION['toaster'][0]['type'] = "bg-success";
-            $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_EDIT_SUCCESS";
+            Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
+                LangManager::translate("redirect.toast.edit_success"));
 
             Redirect::redirectPreviousRoute();
         }
@@ -143,9 +141,8 @@ class RedirectController extends AbstractController
 
         redirectModel::getInstance()->deleteRedirect($id);
 
-        $_SESSION['toaster'][0]['title'] = "REDIRECT_TOAST_TITLE_SUCCESS";
-        $_SESSION['toaster'][0]['type'] = "bg-success";
-        $_SESSION['toaster'][0]['body'] = "REDIRECT_TOAST_DELETE_SUCCESS";
+        Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
+            LangManager::translate("redirect.toast.delete_success"));
 
         Redirect::redirectPreviousRoute();
     }
