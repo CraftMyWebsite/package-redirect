@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS `cmw_redirect`
     UNIQUE KEY `redirect_name` (`redirect_name`),
     UNIQUE KEY `redirect_slug` (`redirect_slug`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `cmw_redirect_logs`
 (
@@ -22,4 +23,5 @@ CREATE TABLE IF NOT EXISTS `cmw_redirect_logs`
     KEY `redirect_logs_redirect_id` (`redirect_logs_redirect_id`),
     CONSTRAINT `cmw_redirect_logs_fk` FOREIGN KEY (`redirect_logs_redirect_id`) REFERENCES `cmw_redirect` (`redirect_id`) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
