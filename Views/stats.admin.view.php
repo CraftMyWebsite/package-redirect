@@ -16,7 +16,7 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
 </div>
 
 <section class="row">
-    <div class="col-12 col-lg-4">
+    <div class="col-12 col-lg-6">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex flex-wrap justify-content-between">
@@ -24,19 +24,12 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
                 </div>
             </div>
             <div class="card-body">
-                <div class="chartjs-size-monitor">
-                    <div class="chartjs-size-monitor-expand">
-                        <div class=""></div>
-                    </div>
-                    <div class="chartjs-size-monitor-shrink">
-                        <div class=""></div>
-                    </div>
+                <div id="chart">
                 </div>
-                <canvas id="chartGlobal"></canvas>
             </div>
         </div>
     </div>
-    <div class="col-12 col-lg-8">
+    <div class="col-12 col-lg-6">
         <div class="card">
             <div class="card-header">
                 <h4>Quelques chiffres</h4>
@@ -70,50 +63,39 @@ $description = LangManager::translate("redirect.dashboard.desc_stats");
     </div>
 </section>
 
-
 <script>
-    //Chart config
-    let ctx = document.getElementById('chartGlobal').getContext('2d');
-    let myChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            //website name
-            labels: [
-                <?php foreach ($stats as $items):?>
-                <?php try {
-                echo json_encode($items->getName(), JSON_THROW_ON_ERROR) . ",";
-            } catch (JsonException $e) {
-                echo $e;
-            }?>
-                <?php endforeach;?>
-            ],
-            datasets: [{
-                //Number of clicks
-
-                data: [
-                    <?php foreach ($stats as $items):?>
-                    <?php try {
-                    echo json_encode($items->getClick(), JSON_THROW_ON_ERROR) . ",";
-                } catch (JsonException $e) {
-                    echo $e;
-                }?>
-                    <?php endforeach;?>
-                ],
-                //Color (random)
-                backgroundColor: [
-                    <?php for ($i = 0; $i < $redirectionNumber; $i++): ?>
-                    <?= "random_rgb()," ?>
-                    <?php endfor; ?>
-                ],
-                borderWidth: 1
-            }]
+    var options = {
+        series: [<?php foreach ($stats as $items):?>
+            <?php try {
+            echo json_encode($items->getClick(), JSON_THROW_ON_ERROR) . ",";
+        } catch (JsonException $e) {
+            echo $e;
+        }?>
+            <?php endforeach;?>],
+        chart: {
+            width: 600,
+            type: 'pie',
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+        labels: [<?php foreach ($stats as $items):?>
+            <?php try {
+            echo json_encode($items->getName(), JSON_THROW_ON_ERROR) . ",";
+        } catch (JsonException $e) {
+            echo $e;
+        }?>
+            <?php endforeach;?>],
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'right'
                 }
             }
-        }
-    });
+        }]
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
 </script>
