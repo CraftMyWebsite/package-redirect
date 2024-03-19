@@ -12,6 +12,7 @@ class RedirectEntity
     private int $click;
     private int $isDefine;
     private int $totalClicks;
+    private bool $isStoringIp;
 
     /**
      * @param int|null $id
@@ -21,8 +22,9 @@ class RedirectEntity
      * @param int $click
      * @param int $isDefine
      * @param int $totalClicks
+     * @param bool $isStoringIp
      */
-    public function __construct(?int $id, string $name, string $slug, string $target, int $click, int $isDefine, int $totalClicks)
+    public function __construct(?int $id, string $name, string $slug, string $target, int $click, int $isDefine, int $totalClicks, bool $isStoringIp)
     {
         $this->id = $id;
         $this->name = $name;
@@ -31,6 +33,7 @@ class RedirectEntity
         $this->click = $click;
         $this->isDefine = $isDefine;
         $this->totalClicks = $totalClicks;
+        $this->isStoringIp = $isStoringIp;
     }
 
     /**
@@ -89,5 +92,11 @@ class RedirectEntity
         return $this->totalClicks;
     }
 
-
+    /**
+     * @return bool
+     */
+    public function isStoringIp(): bool
+    {
+        return $this->isStoringIp;
+    }
 }

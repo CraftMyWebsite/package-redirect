@@ -8,23 +8,31 @@ use CMW\Manager\Package\AbstractModel;
 use CMW\Utils\Redirect;
 
 /**
- * Class @redirectModel
+ * Class @RedirectModel
  * @package Redirect
  * @author Teyir
  * @version 1.0
  */
 class RedirectModel extends AbstractModel
 {
-
-    public function createRedirect(string $name, string $slug, string $target): ?RedirectEntity
+    /**
+     * @param string $name
+     * @param string $slug
+     * @param string $target
+     * @param int $storeIp
+     * @return \CMW\Entity\Redirect\RedirectEntity|null
+     */
+    public function createRedirect(string $name, string $slug, string $target, int $storeIp): ?RedirectEntity
     {
-        $var = array(
+        $var = [
             "name" => $name,
             "slug" => $slug,
-            "target" => $target
-        );
+            "target" => $target,
+            "ip" => $storeIp,
+        ];
 
-        $sql = "INSERT INTO cmw_redirect (redirect_name, redirect_slug, redirect_target) VALUES (:name, :slug, :target)";
+        $sql = "INSERT INTO cmw_redirect (redirect_name, redirect_slug, redirect_target, redirect_store_ip) 
+                        VALUES (:name, :slug, :target, :ip)";
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
@@ -43,16 +51,15 @@ class RedirectModel extends AbstractModel
      */
     public function getRedirects(): array
     {
-
         $sql = "SELECT * FROM cmw_redirect";
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
-            return array();
+            return [];
         }
 
-        $toReturn = array();
+        $toReturn = [];
 
         while ($redirect = $res->fetch()) {
             $toReturn[] = $this->getRedirectById($redirect["redirect_id"]);
@@ -61,20 +68,26 @@ class RedirectModel extends AbstractModel
         return $toReturn;
     }
 
-    public function getRedirectById($id): ?RedirectEntity
+    /**
+     * @param int $id
+     * @return \CMW\Entity\Redirect\RedirectEntity|null
+     */
+    public function getRedirectById(int $id): ?RedirectEntity
     {
-
-
         $sql = "SELECT * FROM cmw_redirect WHERE redirect_id=:id";
 
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
-        if (!$res->execute(array("id" => $id))) {
+        if (!$res->execute(["id" => $id])) {
             return null;
         }
 
         $res = $res->fetch();
+
+        if (!$res) {
+            return null;
+        }
 
         return new RedirectEntity(
             $res['redirect_id'],
@@ -83,18 +96,23 @@ class RedirectModel extends AbstractModel
             $res['redirect_target'],
             $res['redirect_click'],
             $res['redirect_is_define'],
-            $this->getTotalClicks()
+            $this->getTotalClicks(),
+            $res['redirect_store_ip'],
         );
     }
 
-    public function getRedirectBySlug($slug): ?RedirectEntity
+    /**
+     * @param string $slug
+     * @return \CMW\Entity\Redirect\RedirectEntity|null
+     */
+    public function getRedirectBySlug(string $slug): ?RedirectEntity
     {
         $sql = "SELECT * FROM cmw_redirect WHERE redirect_slug=:slug";
 
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
-        if (!$res->execute(array("slug" => $slug))) {
+        if (!$res->execute(["slug" => $slug])) {
             return null;
         }
 
@@ -108,23 +126,35 @@ class RedirectModel extends AbstractModel
                 $res['redirect_target'],
                 $res['redirect_click'],
                 $res['redirect_is_define'],
-                $this->getTotalClicks()
+                $this->getTotalClicks(),
+                $res['redirect_store_ip'],
             );
         }
 
         Redirect::redirectToHome();
     }
 
-    public function updateRedirect(int $id, string $name, string $slug, string $target): ?RedirectEntity
+    /**
+     * @param int $id
+     * @param string $name
+     * @param string $slug
+     * @param string $target
+     * @param int $storeIp
+     * @return \CMW\Entity\Redirect\RedirectEntity|null
+     */
+    public function updateRedirect(int $id, string $name, string $slug, string $target, int $storeIp): ?RedirectEntity
     {
-        $var = array(
+        $var = [
             "id" => $id,
             "name" => $name,
             "slug" => $slug,
-            "target" => $target
-        );
+            "target" => $target,
+            "ip" => $storeIp,
+        ];
 
-        $sql = "UPDATE cmw_redirect SET redirect_name=:name, redirect_slug=:slug, redirect_target=:target WHERE redirect_id=:id";
+        $sql = "UPDATE cmw_redirect SET redirect_name=:name, redirect_slug=:slug, redirect_target=:target, 
+                        redirect_store_ip = :ip 
+                        WHERE redirect_id=:id";
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
@@ -136,38 +166,33 @@ class RedirectModel extends AbstractModel
         return null;
     }
 
-    public function deleteRedirect(int $id): void
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function deleteRedirect(int $id): bool
     {
-
         $sql = "DELETE FROM cmw_redirect WHERE redirect_id=:id";
 
         $db = DatabaseManager::getInstance();
-        $req = $db->prepare($sql);
-        $req->execute(array("id" => $id));
+        return $db->prepare($sql)->execute(["id" => $id]);
     }
 
-    public function addClick($id): void
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function addClick(int $id): bool
     {
-
         $sql = "UPDATE cmw_redirect SET redirect_click = redirect_click+1 WHERE redirect_id=:id";
 
         $db = DatabaseManager::getInstance();
-        $req = $db->prepare($sql);
-        $req->execute(array("id" => $id));
+        return $db->prepare($sql)->execute(["id" => $id]);
     }
 
-
-    public function redirect($id): void
-    {
-        $res = $this->getRedirectById($id);
-        $this->addClick($id);
-        (new RedirectLogsModel())->createLog($id);
-
-        http_response_code(302);
-        header('Location: ' . $res?->getTarget());
-    }
-
-
+    /**
+     * @return int
+     */
     public function getNumberOfLines(): int
     {
         $sql = "SELECT redirect_id FROM cmw_redirect";
@@ -184,6 +209,9 @@ class RedirectModel extends AbstractModel
         return 0;
     }
 
+    /**
+     * @return int
+     */
     public function getTotalClicks(): int
     {
         $toReturn = 0;
@@ -203,24 +231,31 @@ class RedirectModel extends AbstractModel
     }
 
 
-    public function checkName($name): int
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function isNameUsed(string $name): bool
     {
-
         $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name";
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute(array("name" => $name))) {
+        if ($req->execute(["name" => $name])) {
             $lines = $req->fetchAll();
 
-            return count($lines);
+            return count($lines) >= 1;
         }
 
-        return 0;
+        return false;
     }
 
-    public function checkSlug($slug): int
+    /**
+     * @param string $slug
+     * @return bool
+     */
+    public function isSlugUsed(string $slug): bool
     {
 
         $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug";
@@ -228,21 +263,26 @@ class RedirectModel extends AbstractModel
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute(array("slug" => $slug))) {
+        if ($req->execute(["slug" => $slug])) {
             $lines = $req->fetchAll();
 
-            return count($lines);
+            return count($lines) >= 1;
         }
 
-        return 0;
+        return false;
     }
 
-    public function checkNameEdit($name, $id): int
+    /**
+     * @param string $name
+     * @param int $id
+     * @return int
+     */
+    public function checkNameEdit(string $name, int $id): int
     {
-        $var = array(
+        $var = [
             "name" => $name,
-            "id" => $id
-        );
+            "id" => $id,
+        ];
 
         $sql = "SELECT redirect_name FROM cmw_redirect WHERE redirect_name=:name AND redirect_id != :id";
 
@@ -258,12 +298,17 @@ class RedirectModel extends AbstractModel
         return 0;
     }
 
+    /**
+     * @param $slug
+     * @param $id
+     * @return int
+     */
     public function checkSlugEdit($slug, $id): int
     {
-        $var = array(
+        $var = [
             "slug" => $slug,
-            "id" => $id
-        );
+            "id" => $id,
+        ];
 
         $sql = "SELECT redirect_slug FROM cmw_redirect WHERE redirect_slug=:slug AND redirect_id != :id";
 

@@ -1,20 +1,22 @@
 <?php
+
 namespace CMW\Entity\Redirect;
 
-class RedirectLogsEntity{
+class RedirectLogsEntity
+{
 
     private int $id;
     private ?int $redirectId;
     private string $date;
-    private string $clientIp;
+    private ?string $clientIp;
 
     /**
      * @param int $id
      * @param int|null $redirectId
      * @param string $date
-     * @param string $clientIp
+     * @param string|null $clientIp
      */
-    public function __construct(int $id, ?int $redirectId, string $date, string $clientIp)
+    public function __construct(int $id, ?int $redirectId, string $date, ?string $clientIp)
     {
         $this->id = $id;
         $this->redirectId = $redirectId;
@@ -47,9 +49,10 @@ class RedirectLogsEntity{
     }
 
     /**
-     * @return string
+     * @return string|null
+     *
      */
-    public function getClientIp(): string
+    public function getClientIp(): ?string
     {
         return $this->clientIp;
     }

@@ -2,95 +2,89 @@
 
 namespace CMW\Controller\Redirect;
 
+use CMW\Controller\users\UsersController;
+use CMW\Manager\Filter\FilterManager;
 use CMW\Manager\Flash\Alert;
 use CMW\Manager\Flash\Flash;
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
-use CMW\Controller\users\UsersController;
 use CMW\Manager\Requests\Request;
 use CMW\Manager\Router\Link;
+use CMW\Manager\Views\View;
 use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
-use CMW\Manager\Views\View;
 use CMW\Utils\Redirect;
+use CMW\Utils\Website;
+use JetBrains\PhpStorm\NoReturn;
 
 /**
- * Class: @redirectController
- * @package redirect
+ * Class: @RedirectController
+ * @package Redirect
  * @author Teyir
  * @version 1.0
  */
 class RedirectController extends AbstractController
 {
     #[Link(path: "/", method: Link::GET, scope: "/cmw-admin/redirect")]
-    #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
+    #[Link("/manage", Link::GET, [], "/cmw-admin/redirect")]
     private function frontRedirectListAdmin(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.show");
 
         //Get all redirect
-        $redirectList = redirectModel::getInstance()->getRedirects();
-
+        $redirectList = RedirectModel::getInstance()->getRedirects();
 
         View::createAdminView('Redirect', 'list')
-            ->addStyle("Admin/Resources/Vendors/Simple-datatables/style.css", "Admin/Resources/Assets/Css/Pages/simple-datatables.css")
+            ->addStyle("Admin/Resources/Vendors/Simple-datatables/style.css",
+                "Admin/Resources/Assets/Css/Pages/simple-datatables.css")
             ->addScriptAfter("Admin/Resources/Vendors/Simple-datatables/Umd/simple-datatables.js",
                 "Admin/Resources/Assets/Js/Pages/simple-datatables.js")
             ->addVariableList(["redirectList" => $redirectList])
             ->view();
     }
 
-    #[Link("/list", Link::GET, [], "/cmw-admin/redirect")]
-    private function create(): void
-    {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
-
-        View::createAdminView('Redirect', 'list')
-            ->addScriptBefore("App/Package/redirect/Views/Assets/Js/main.js")
-            ->view();
-    }
-
-    #[Link("/list", Link::POST, [], "/cmw-admin/redirect")]
+    #[NoReturn] #[Link("/manage", Link::POST, [], "/cmw-admin/redirect")]
     private function createPost(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.create");
 
+        $name = FilterManager::filterInputStringPost("name");
+        $slug = FilterManager::filterInputStringPost("slug");
 
-        if (redirectModel::getInstance()->checkName(filter_input(INPUT_POST, "name")) > 0) {
-
+        if (RedirectModel::getInstance()->isNameUsed($name)) {
             Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
                 LangManager::translate("redirect.toast.create_error_name"));
 
             Redirect::redirectPreviousRoute();
+        }
 
-        } elseif (redirectModel::getInstance()->checkSlug(filter_input(INPUT_POST, "slug")) > 0) {
+
+        if (RedirectModel::getInstance()->isSlugUsed($slug)) {
 
             Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
                 LangManager::translate("redirect.toast.create_error_slug"));
 
             Redirect::redirectPreviousRoute();
-        } else {
-
-            $name = filter_input(INPUT_POST, "name");
-            $slug = filter_input(INPUT_POST, "slug");
-            $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
-
-            redirectModel::getInstance()->createRedirect($name, $slug, $target);
-
-            Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
-                LangManager::translate("redirect.toast.create_success"));
-
-            Redirect::redirectPreviousRoute();
         }
 
+        $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
+        $isStoringIp = isset($_POST['storeIp']) ? 1 : 0;
+
+        RedirectModel::getInstance()->createRedirect($name, $slug, $target, $isStoringIp);
+
+        Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
+            LangManager::translate("redirect.toast.create_success"));
+
+
+        Redirect::redirectPreviousRoute();
     }
 
-    #[Link("/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
+    #[Link("/manage/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
     private function edit(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
-        $redirect = redirectModel::getInstance()->getRedirectById($id);
+        $redirect = RedirectModel::getInstance()->getRedirectById($id);
 
         View::createAdminView('Redirect', 'edit')
             ->addScriptBefore("App/Package/redirect/Views/Assets/Js/main.js")
@@ -98,48 +92,47 @@ class RedirectController extends AbstractController
             ->view();
     }
 
-    #[Link("/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
+    #[NoReturn] #[Link("/manage/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
     private function editPost(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
+        $name = FilterManager::filterInputStringPost("name");
+        $slug = FilterManager::filterInputStringPost("slug");
 
-        if (redirectModel::getInstance()->checkNameEdit(filter_input(INPUT_POST, "name"), $id) > 0) {
+        if (RedirectModel::getInstance()->checkNameEdit($name, $id) > 0) {
             Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
                 LangManager::translate("redirect.toast.create_error_name"));
-
-
-            Redirect::redirect("../edit/" . $id);
-
-        } elseif (redirectModel::getInstance()->checkSlugEdit(filter_input(INPUT_POST, "slug"), $id) > 0) {
-
-            Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
-                LangManager::translate("redirect.toast.create_error_slug"));
-
-            Redirect::redirect("../edit/" . $id);
-        } else {
-
-            $name = filter_input(INPUT_POST, "name");
-            $slug = filter_input(INPUT_POST, "slug");
-            $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
-
-            redirectModel::getInstance()->updateRedirect($id, $name, $slug, $target);
-
-            Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
-                LangManager::translate("redirect.toast.edit_success"));
 
             Redirect::redirectPreviousRoute();
         }
 
+        if (RedirectModel::getInstance()->checkSlugEdit($slug, $id) > 0) {
+
+            Flash::send(Alert::ERROR, LangManager::translate("redirect.toast.title_error"),
+                LangManager::translate("redirect.toast.create_error_slug"));
+
+            Redirect::redirectPreviousRoute();
+        }
+
+
+        $target = filter_input(INPUT_POST, "target", FILTER_SANITIZE_URL);
+        $isStoringIp = isset($_POST['storeIp']) ? 1 : 0;
+
+        RedirectModel::getInstance()->updateRedirect($id, $name, $slug, $target, $isStoringIp);
+
+        Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
+            LangManager::translate("redirect.toast.edit_success"));
+
+        Redirect::redirectPreviousRoute();
     }
 
-    #[Link("/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
+    #[NoReturn] #[Link("/manage/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
     private function delete(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.delete");
 
-
-        redirectModel::getInstance()->deleteRedirect($id);
+        RedirectModel::getInstance()->deleteRedirect($id);
 
         Flash::send(Alert::SUCCESS, LangManager::translate("redirect.toast.title_success"),
             LangManager::translate("redirect.toast.delete_success"));
@@ -152,19 +145,20 @@ class RedirectController extends AbstractController
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.stats");
 
+        $stats = RedirectModel::getInstance()->getRedirects();
 
-        $stats = redirectModel::getInstance()->getRedirects();
+        $redirectionNumber = RedirectModel::getInstance()->getNumberOfLines();
 
-        $redirectionNumber = redirectModel::getInstance()->getNumberOfLines();
-
-        $totalClicks = redirectModel::getInstance()->getTotalClicks();
+        $totalClicks = RedirectModel::getInstance()->getTotalClicks();
 
         $allClicks = redirectLogsModel::getInstance()->getAllClicks();
 
 
         View::createAdminView('Redirect', 'stats')
-            ->addScriptBefore("Admin/Resources/Vendors/Apexcharts/Js/apexcharts.js", "App/Package/Redirect/Views/Assets/Js/main.js")
-            ->addVariableList(["allClicks" => $allClicks, "stats" => $stats, "redirectionNumber" => $redirectionNumber, "totalClicks" => $totalClicks])
+            ->addScriptBefore("Admin/Resources/Vendors/Apexcharts/Js/apexcharts.js",
+                "App/Package/Redirect/Views/Assets/Js/main.js")
+            ->addVariableList(["allClicks" => $allClicks, "stats" => $stats,
+                "redirectionNumber" => $redirectionNumber, "totalClicks" => $totalClicks])
             ->view();
     }
 
@@ -174,9 +168,27 @@ class RedirectController extends AbstractController
     #[Link("/r/:slug", Link::GET, ["slug" => ".*?"])]
     private function redirect(Request $request, string $slug): void
     {
-        $entity = redirectModel::getInstance()->getRedirectBySlug($slug);
+        //Check if slug exist
+        $entity = RedirectModel::getInstance()->getRedirectBySlug($slug);
+        if (is_null($entity)) {
+            Redirect::redirectToHome();
+        }
 
-        redirectModel::getInstance()->redirect($entity?->getId());
+        //Increase counter
+        RedirectModel::getInstance()->addClick($entity->getId());
+
+        //Check if store @ip is enabled
+        if ($entity->isStoringIp()) {
+            $clientIp = Website::getClientIp();
+        } else {
+            $clientIp = null;
+        }
+
+        //Logs
+        RedirectLogsModel::getInstance()->createLog($entity->getId(), $clientIp);
+
+        //Redirect
+        http_response_code(302);
+        header('Location: ' . $entity->getTarget());
     }
-
 }

@@ -62,6 +62,13 @@ $description = LangManager::translate("redirect.dashboard.desc_edit");
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6 align-self-center">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="storeIp"><?= LangManager::translate('redirect.dashboard.save_ip') ?></label>
+                                <input class="form-check-input" type="checkbox" id="storeIp"
+                                       name="storeIp" <?= $redirect->isStoringIp() ? 'checked' : '' ?>>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

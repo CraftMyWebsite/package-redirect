@@ -46,7 +46,7 @@ class Package implements IPackageConfig
                     new PackageSubMenuType(
                         title: 'Gestion',
                         permission: 'redirect.show',
-                        url: 'redirect/list',
+                        url: 'redirect/manage',
                     ),
                     new PackageSubMenuType(
                         title: 'Statistiques',

@@ -27,7 +27,7 @@ $description = LangManager::translate("redirect.dashboard.desc");
                     <?php (new SecurityManager())->insertHiddenToken() ?>
                     <h6><?= LangManager::translate("redirect.dashboard.name") ?> :</h6>
                     <div class="form-group position-relative has-icon-left">
-                        <input type="text" class="form-control" name="name" required autocomplete="off"
+                        <input type="text" class="form-control" name="name" required autocomplete="off" maxlength="255"
                                placeholder="<?= LangManager::translate("redirect.dashboard.name_placeholder") ?>">
                         <div class="form-control-icon">
                             <i class="fas fa-heading"></i>
@@ -37,20 +37,28 @@ $description = LangManager::translate("redirect.dashboard.desc");
                     <div class="input-group mb-3">
                         <span
                             class="input-group-text"><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?></span>
-                        <input type="text" name="slug" class="form-control"
+                        <input type="text" name="slug" class="form-control" maxlength="255" required
                                placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>">
                     </div>
                     <h6><?= LangManager::translate("redirect.dashboard.target") ?> :</h6>
                     <div class="form-group position-relative has-icon-left">
-                        <input type="text" class="form-control" name="target" autocomplete="off"
+                        <input type="url" class="form-control" name="target" autocomplete="off" maxlength="255"
+                               required
                                placeholder="<?= LangManager::translate("redirect.dashboard.target_placeholder") ?>">
                         <div class="form-control-icon">
                             <i class="fas fa-link"></i>
                         </div>
                     </div>
+                    <div class="form-check form-switch">
+                        <label class="form-check-label"
+                               for="storeIp"><?= LangManager::translate('redirect.dashboard.save_ip') ?></label>
+                        <input class="form-check-input" type="checkbox" id="storeIp" name="storeIp" checked>
+                    </div>
+
                     <div class="text-center">
-                        <button type="submit"
-                                class="btn btn-primary"><?= LangManager::translate("core.btn.add") ?></button>
+                        <button type="submit" class="btn btn-primary">
+                            <?= LangManager::translate("core.btn.add") ?>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -88,7 +96,7 @@ $description = LangManager::translate("redirect.dashboard.desc");
                             <td><?= $redirect->getTarget() ?></td>
                             <td><?= $redirect->getClick() ?></td>
                             <td>
-                                <a href="../redirect/edit/<?= $redirect->getId() ?>">
+                                <a href="manage/edit/<?= $redirect->getId() ?>">
                                     <i class="text-primary me-3 fas fa-edit"></i>
                                 </a>
                                 <a type="button" data-bs-toggle="modal"
@@ -114,7 +122,7 @@ $description = LangManager::translate("redirect.dashboard.desc");
                                             <span
                                                 class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
                                         </button>
-                                        <a href="delete/<?= $redirect->getId() ?>" class="btn btn-danger ml-1">
+                                        <a href="manage/delete/<?= $redirect->getId() ?>" class="btn btn-danger ml-1">
                                             <i class="bx bx-check d-block d-sm-none"></i>
                                             <span
                                                 class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
