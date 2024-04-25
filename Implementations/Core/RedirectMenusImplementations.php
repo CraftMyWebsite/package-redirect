@@ -1,6 +1,6 @@
 <?php
 
-namespace CMW\Implementation\Redirect;
+namespace CMW\Implementation\Redirect\Core;
 
 use CMW\Interface\Core\IMenus;
 use CMW\Model\Redirect\RedirectModel;
