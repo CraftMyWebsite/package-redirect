@@ -43,4 +43,14 @@ return [
         "edit_success" => "Modification effectuée",
         "delete_success" => "Suppression effectuée",
     ],
+
+    "permissions" => [
+        "redirect" => [
+            "show" => "Afficher les redirections",
+            "create" => "Créer une redirection",
+            "edit" => "Modifier les redirections",
+            "delete" => "Supprimer une redirection",
+            "stats" => "Afficher les stats des redirections",
+        ],
+    ],
 ];

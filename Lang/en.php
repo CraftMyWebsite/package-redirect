@@ -43,4 +43,14 @@ return [
         "edit_success" => "Editing successful",
         "delete_success" => "Deleting successful",
     ],
+
+    "permissions" => [
+        "redirect" => [
+            "show" => "Show redirections",
+            "create" => "Create a redirection",
+            "edit" => "Edit redirections",
+            "delete" => "Delete a redirection",
+            "stats" => "Show redirection stats",
+        ],
+    ],
 ];

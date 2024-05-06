@@ -1,7 +1,0 @@
-[
-  "redirect.show",
-  "redirect.create",
-  "redirect.edit",
-  "redirect.delete",
-  "redirect.stats"
-]
