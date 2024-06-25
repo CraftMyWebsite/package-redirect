@@ -10,131 +10,157 @@ $description = LangManager::translate("redirect.dashboard.desc");
 
 ?>
 
+<h3><i class="fa-solid fa-sliders"></i> <?= LangManager::translate("redirect.dashboard.desc") ?></h3>
 
-<div class="d-flex flex-wrap justify-content-between">
-    <h3><i class="fa-solid fa-sliders"></i> <span
-            class="m-lg-auto"><?= LangManager::translate("redirect.dashboard.desc") ?></span></h3>
-</div>
 
-<section class="row">
-    <div class="col-12 col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h4><?= LangManager::translate("redirect.dashboard.title_add") ?></h4>
+<div class="card">
+    <div class="lg:flex justify-between">
+        <h6><?= LangManager::translate("redirect.dashboard.title_add") ?></h6>
+        <button form="add" type="submit" class="btn-primary">
+            <?= LangManager::translate("core.btn.add") ?>
+        </button>
+    </div>
+
+    <form id="add" method="post" action="">
+        <?php (new SecurityManager())->insertHiddenToken() ?>
+        <div class="grid-2">
+            <div>
+                <label for="name"><?= LangManager::translate("redirect.dashboard.name") ?> :</label>
+                <div class="input-group">
+                    <i class="fa-solid fa-heading"></i>
+                    <input type="text" id="name" name="name" required autocomplete="off" maxlength="255"
+                           placeholder="<?= LangManager::translate("redirect.dashboard.name_placeholder") ?>">
+                </div>
             </div>
-            <div class="card-body">
-                <form method="post" action="">
-                    <?php (new SecurityManager())->insertHiddenToken() ?>
-                    <h6><?= LangManager::translate("redirect.dashboard.name") ?> :</h6>
-                    <div class="form-group position-relative has-icon-left">
-                        <input type="text" class="form-control" name="name" required autocomplete="off" maxlength="255"
-                               placeholder="<?= LangManager::translate("redirect.dashboard.name_placeholder") ?>">
-                        <div class="form-control-icon">
-                            <i class="fas fa-heading"></i>
-                        </div>
-                    </div>
-                    <h6><?= LangManager::translate("redirect.dashboard.slug") ?> :</h6>
-                    <div class="input-group mb-3">
-                        <span
-                            class="input-group-text"><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?></span>
-                        <input type="text" name="slug" class="form-control" maxlength="255" required
-                               placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>">
-                    </div>
-                    <h6><?= LangManager::translate("redirect.dashboard.target") ?> :</h6>
-                    <div class="form-group position-relative has-icon-left">
-                        <input type="url" class="form-control" name="target" autocomplete="off" maxlength="255"
-                               required
-                               placeholder="<?= LangManager::translate("redirect.dashboard.target_placeholder") ?>">
-                        <div class="form-control-icon">
-                            <i class="fas fa-link"></i>
-                        </div>
-                    </div>
-                    <div class="form-check form-switch">
-                        <label class="form-check-label"
-                               for="storeIp"><?= LangManager::translate('redirect.dashboard.save_ip') ?></label>
-                        <input class="form-check-input" type="checkbox" id="storeIp" name="storeIp" checked>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">
-                            <?= LangManager::translate("core.btn.add") ?>
-                        </button>
-                    </div>
-                </form>
+            <div>
+                <label for="slug"><?= LangManager::translate("redirect.dashboard.slug") ?> :</label>
+                <div class="input-group">
+                    <i><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?></i>
+                    <input type="text" id="slug" name="slug" maxlength="255" required
+                           placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>">
+                </div>
+            </div>
+            <div>
+                <label for="target"><?= LangManager::translate("redirect.dashboard.target") ?> :</label>
+                <div class="input-group">
+                    <i class="fa-solid fa-link"></i>
+                    <input type="url" id="target" name="target" autocomplete="off" maxlength="255"
+                           required
+                           placeholder="<?= LangManager::translate("redirect.dashboard.target_placeholder") ?>">
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label class="toggle">
+                        <p class="toggle-label"><?= LangManager::translate('redirect.dashboard.save_ip') ?></p>
+                        <input type="checkbox" class="toggle-input" id="storeIp" name="storeIp" checked>
+                        <div class="toggle-slider"></div>
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 col-lg-8">
-        <div class="card">
-            <div class="card-header">
-                <h4><?= LangManager::translate("redirect.dashboard.title") ?></h4>
-            </div>
-            <div class="card-body">
-                <table class="table" id="table1">
-                    <thead>
-                    <tr>
-                        <th class="text-center"><?= LangManager::translate("redirect.list_table.id") ?></th>
-                        <th class="text-center"><?= LangManager::translate("redirect.list_table.name") ?></th>
-                        <th class="text-center"><?= LangManager::translate("redirect.list_table.slug") ?></th>
-                        <th class="text-center"><?= LangManager::translate("redirect.list_table.target") ?></th>
-                        <th class="text-center"><?= LangManager::translate("redirect.list_table.click") ?></th>
-                        <th class="text-center"><?= LangManager::translate("redirect.list_table.edit") ?></th>
-                    </tr>
-                    </thead>
-                    <tbody class="text-center">
-                    <?php /** @var \CMW\Entity\Redirect\RedirectEntity[] $redirectList */
-                    foreach ($redirectList as $redirect) : ?>
-                        <tr>
-                            <td><?= $redirect->getId() ?></td>
-                            <td><?= $redirect->getName() ?></td>
-                            <td>
-                                <a href="<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>"
-                                   target="_blank">
-                                    <?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>
-                                </a>
-                            </td>
-                            <td><?= $redirect->getTarget() ?></td>
-                            <td><?= $redirect->getClick() ?></td>
-                            <td>
-                                <a href="manage/edit/<?= $redirect->getId() ?>">
-                                    <i class="text-primary me-3 fas fa-edit"></i>
-                                </a>
-                                <a type="button" data-bs-toggle="modal"
-                                   data-bs-target="#delete-<?= $redirect->getId() ?>">
-                                    <i class="text-danger fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <div class="modal fade text-left" id="delete-<?= $redirect->getId() ?>" tabindex="-1"
-                             role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-danger">
-                                        <h5 class="modal-title white"
-                                            id="myModalLabel160"><?= LangManager::translate("redirect.modal.delete") ?> <?= $redirect->getName() ?></h5>
-                                    </div>
-                                    <div class="modal-body">
-                                        <?= LangManager::translate("redirect.modal.deletealert") ?>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                            <i class="bx bx-x d-block d-sm-none"></i>
-                                            <span
-                                                class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
-                                        </button>
-                                        <a href="manage/delete/<?= $redirect->getId() ?>" class="btn btn-danger ml-1">
-                                            <i class="bx bx-check d-block d-sm-none"></i>
-                                            <span
-                                                class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
-                                        </a>
-                                    </div>
+    </form>
+</div>
+
+<div class="card mt-4">
+    <h6><?= LangManager::translate("redirect.dashboard.title") ?></h6>
+    <div class="table-container table-container-striped">
+        <table class="table" id="table1">
+            <thead>
+            <tr>
+                <th class="text-center"><?= LangManager::translate("redirect.list_table.name") ?></th>
+                <th class="text-center"><?= LangManager::translate("redirect.list_table.slug") ?></th>
+                <th class="text-center"><?= LangManager::translate("redirect.list_table.target") ?></th>
+                <th class="text-center"><?= LangManager::translate("redirect.list_table.click") ?></th>
+                <th class="text-center"><?= LangManager::translate("redirect.list_table.edit") ?></th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            <?php /** @var \CMW\Entity\Redirect\RedirectEntity[] $redirectList */
+            foreach ($redirectList as $redirect) : ?>
+                <tr>
+                    <td><?= $redirect->getName() ?></td>
+                    <td>
+                        <a class="link" href="<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>"
+                           target="_blank">
+                            <?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?><?= $redirect->getSlug() ?>
+                        </a>
+                    </td>
+                    <td><?= mb_strimwidth($redirect->getTarget(), 0, 40, '...') ?></td>
+                    <td><?= $redirect->getClick() ?></td>
+                    <td class="space-x-2">
+                        <button data-modal-toggle="modal-edit-<?= $redirect->getId() ?>" type="button"><i class="text-info me-3 fas fa-edit"></i></button>
+                        <button data-modal-toggle="modal-delete-<?= $redirect->getId() ?>" type="button"><i class="text-danger fas fa-trash-alt"></i></button>
+                        <div id="modal-delete-<?= $redirect->getId() ?>" class="modal-container">
+                            <div class="modal">
+                                <div class="modal-header-danger">
+                                    <h6><?= LangManager::translate("redirect.modal.delete") ?> <?= $redirect->getName() ?></h6>
+                                    <button type="button" data-modal-hide="modal-delete-<?= $redirect->getId() ?>"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <div class="modal-body">
+                                    <?= LangManager::translate("redirect.modal.deletealert") ?>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="manage/delete/<?= $redirect->getId() ?>" class="btn-danger">
+                                        <?= LangManager::translate("core.btn.delete") ?>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                        <div id="modal-edit-<?= $redirect->getId() ?>" class="modal-container">
+                            <div class="modal">
+                                <div class="modal-header">
+                                    <h6><?= LangManager::translate("redirect.dashboard.title_edit") ?> <?= $redirect->getName() ?></h6>
+                                    <button type="button" data-modal-hide="modal-edit-<?= $redirect->getId() ?>"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <form id="edit" action="manage/edit/<?= $redirect->getId() ?>" method="post" enctype="multipart/form-data">
+                                    <?php (new SecurityManager())->insertHiddenToken() ?>
+                                <div class="modal-body">
+                                    <div>
+                                        <label for="name"><?= LangManager::translate("redirect.dashboard.name") ?> :</label>
+                                        <div class="input-group">
+                                            <i class="fa-solid fa-heading"></i>
+                                            <input type="text" id="name" name="name"  required autocomplete="off" maxlength="255"
+                                                   placeholder="<?= LangManager::translate("redirect.dashboard.name_placeholder") ?>" value="<?= $redirect->getName() ?>">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="slug"><?= LangManager::translate("redirect.dashboard.slug") ?> :</label>
+                                        <div class="input-group">
+                                            <i><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "r/" ?></i>
+                                            <input type="text" id="slug" name="slug" maxlength="255" required
+                                                   placeholder="<?= LangManager::translate("redirect.dashboard.slug_placeholder") ?>" value="<?= $redirect->getSlug() ?>">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="target"><?= LangManager::translate("redirect.dashboard.target") ?> :</label>
+                                        <div class="input-group">
+                                            <i class="fa-solid fa-link"></i>
+                                            <input type="url" id="target" name="target" autocomplete="off" maxlength="255"
+                                                   required
+                                                   placeholder="<?= LangManager::translate("redirect.dashboard.target_placeholder") ?>" value="<?= $redirect->getTarget() ?>">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <label class="toggle">
+                                                <p class="toggle-label"><?= LangManager::translate('redirect.dashboard.save_ip') ?></p>
+                                                <input type="checkbox" class="toggle-input" id="storeIp" name="storeIp" <?= $redirect->isStoringIp() ? 'checked' : '' ?>>
+                                                <div class="toggle-slider"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn-primary"><?= LangManager::translate("core.btn.save") ?></button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
-</section>
+</div>

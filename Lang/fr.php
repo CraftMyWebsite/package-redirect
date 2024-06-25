@@ -46,11 +46,11 @@ return [
 
     "permissions" => [
         "redirect" => [
-            "show" => "Afficher les redirections",
-            "create" => "Créer une redirection",
-            "edit" => "Modifier les redirections",
-            "delete" => "Supprimer une redirection",
-            "stats" => "Afficher les stats des redirections",
+            "show" => "Afficher",
+            "create" => "Créer",
+            "edit" => "Modifier",
+            "delete" => "Supprimer",
+            "stats" => "Afficher les stats",
         ],
     ],
 ];
