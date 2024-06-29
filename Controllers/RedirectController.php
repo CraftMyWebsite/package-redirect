@@ -35,10 +35,9 @@ class RedirectController extends AbstractController
         $redirectList = RedirectModel::getInstance()->getRedirects();
 
         View::createAdminView('Redirect', 'list')
-            ->addStyle("Admin/Resources/Vendors/Simple-datatables/style.css",
-                "Admin/Resources/Assets/Css/Pages/simple-datatables.css")
+            ->addStyle("Admin/Resources/Assets/Css/simple-datatables.css")
             ->addScriptAfter("Admin/Resources/Vendors/Simple-datatables/Umd/simple-datatables.js",
-                "Admin/Resources/Assets/Js/Pages/simple-datatables.js")
+                "Admin/Resources/Vendors/Simple-datatables/config-datatables.js")
             ->addVariableList(["redirectList" => $redirectList])
             ->view();
     }
@@ -77,19 +76,6 @@ class RedirectController extends AbstractController
 
 
         Redirect::redirectPreviousRoute();
-    }
-
-    #[Link("/manage/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    private function edit(Request $request, int $id): void
-    {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
-
-        $redirect = RedirectModel::getInstance()->getRedirectById($id);
-
-        View::createAdminView('Redirect', 'edit')
-            ->addScriptBefore("App/Package/redirect/Views/Assets/Js/main.js")
-            ->addVariableList(["redirect" => $redirect])
-            ->view();
     }
 
     #[NoReturn] #[Link("/manage/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
