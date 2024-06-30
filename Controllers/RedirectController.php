@@ -36,7 +36,7 @@ class RedirectController extends AbstractController
 
         View::createAdminView('Redirect', 'list')
             ->addStyle("Admin/Resources/Assets/Css/simple-datatables.css")
-            ->addScriptAfter("Admin/Resources/Vendors/Simple-datatables/Umd/simple-datatables.js",
+            ->addScriptAfter("Admin/Resources/Vendors/Simple-datatables/simple-datatables.js",
                 "Admin/Resources/Vendors/Simple-datatables/config-datatables.js")
             ->addVariableList(["redirectList" => $redirectList])
             ->view();
