@@ -8,7 +8,7 @@ use CMW\Manager\Flash\Alert;
 use CMW\Manager\Flash\Flash;
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
-use CMW\Manager\Requests\Request;
+
 use CMW\Manager\Router\Link;
 use CMW\Manager\Views\View;
 use CMW\Model\Redirect\RedirectLogsModel;
@@ -79,7 +79,7 @@ class RedirectController extends AbstractController
     }
 
     #[NoReturn] #[Link("/manage/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    private function editPost(Request $request, int $id): void
+    private function editPost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.edit");
 
@@ -114,7 +114,7 @@ class RedirectController extends AbstractController
     }
 
     #[NoReturn] #[Link("/manage/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/redirect")]
-    private function delete(Request $request, int $id): void
+    private function delete(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "redirect.delete");
 
@@ -152,7 +152,7 @@ class RedirectController extends AbstractController
 
     //Redirect
     #[Link("/r/:slug", Link::GET, ["slug" => ".*?"])]
-    private function redirect(Request $request, string $slug): void
+    private function redirect(string $slug): void
     {
         //Check if slug exist
         $entity = RedirectModel::getInstance()->getRedirectBySlug($slug);
