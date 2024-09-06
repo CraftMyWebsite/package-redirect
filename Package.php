@@ -10,17 +10,17 @@ class Package implements IPackageConfig
 {
     public function name(): string
     {
-        return "Redirect";
+        return 'Redirect';
     }
 
     public function version(): string
     {
-        return "0.0.1";
+        return '0.0.1';
     }
 
     public function authors(): array
     {
-        return ["Teyir"];
+        return ['Teyir'];
     }
 
     public function isGame(): bool
@@ -37,9 +37,9 @@ class Package implements IPackageConfig
     {
         return [
             new PackageMenuType(
-                lang: "fr",
-                icon: "fas fa-directions",
-                title: "Redirect",
+                lang: 'fr',
+                icon: 'fas fa-directions',
+                title: 'Redirect',
                 url: null,
                 permission: null,
                 subMenus: [
@@ -56,9 +56,9 @@ class Package implements IPackageConfig
                 ]
             ),
             new PackageMenuType(
-                lang: "en",
-                icon: "fas fa-directions",
-                title: "Redirect",
+                lang: 'en',
+                icon: 'fas fa-directions',
+                title: 'Redirect',
                 url: null,
                 permission: null,
                 subMenus: [
@@ -79,12 +79,12 @@ class Package implements IPackageConfig
 
     public function requiredPackages(): array
     {
-        return ["Core"];
+        return ['Core'];
     }
 
     public function uninstall(): bool
     {
-        //Return true, we don't need other operations for uninstall.
+        // Return true, we don't need other operations for uninstall.
         return true;
     }
 }

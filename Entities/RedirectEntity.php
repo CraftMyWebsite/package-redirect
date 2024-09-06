@@ -2,7 +2,6 @@
 
 namespace CMW\Entity\Redirect;
 
-
 class RedirectEntity
 {
     private ?int $id;

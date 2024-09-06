@@ -21,12 +21,12 @@ class RedirectLogsModel extends AbstractModel
      */
     public function createLog(int $redirectId, ?string $clientIp): ?RedirectLogsEntity
     {
-        $sql = "INSERT INTO cmw_redirect_logs (redirect_logs_redirect_id, redirect_logs_client_ip) VALUES (:redirect_id, :client_ip)";
+        $sql = 'INSERT INTO cmw_redirect_logs (redirect_logs_redirect_id, redirect_logs_client_ip) VALUES (:redirect_id, :client_ip)';
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute(["redirect_id" => $redirectId, "client_ip" => $clientIp])) {
+        if ($req->execute(['redirect_id' => $redirectId, 'client_ip' => $clientIp])) {
             $id = $db->lastInsertId();
             return $this->getRedirectLogsById($id);
         }
@@ -40,13 +40,13 @@ class RedirectLogsModel extends AbstractModel
      */
     public function getRedirectLogsById(int $id): ?RedirectLogsEntity
     {
-        $sql = "SELECT redirect_logs_id, redirect_logs_redirect_id, redirect_logs_date, redirect_logs_client_ip 
-                FROM cmw_redirect_logs WHERE redirect_logs_id = :id";
+        $sql = 'SELECT redirect_logs_id, redirect_logs_redirect_id, redirect_logs_date, redirect_logs_client_ip 
+                FROM cmw_redirect_logs WHERE redirect_logs_id = :id';
 
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
-        if (!$res->execute(["id" => $id])) {
+        if (!$res->execute(['id' => $id])) {
             return null;
         }
 
@@ -69,7 +69,7 @@ class RedirectLogsModel extends AbstractModel
      */
     public function getAllClicks(): int
     {
-        $sql = "SELECT redirect_logs_id FROM cmw_redirect_logs";
+        $sql = 'SELECT redirect_logs_id FROM cmw_redirect_logs';
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
 

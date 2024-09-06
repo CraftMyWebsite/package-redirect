@@ -4,7 +4,6 @@ namespace CMW\Entity\Redirect;
 
 class RedirectLogsEntity
 {
-
     private int $id;
     private ?int $redirectId;
     private string $date;
@@ -50,12 +49,9 @@ class RedirectLogsEntity
 
     /**
      * @return string|null
-     *
      */
     public function getClientIp(): ?string
     {
         return $this->clientIp;
     }
-
-
 }
