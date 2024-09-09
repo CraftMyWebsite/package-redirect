@@ -12,6 +12,7 @@ use CMW\Manager\Router\Link;
 use CMW\Manager\Views\View;
 use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
+use CMW\Utils\Client;
 use CMW\Utils\Redirect;
 use CMW\Utils\Website;
 use JetBrains\PhpStorm\NoReturn;
@@ -161,7 +162,7 @@ class RedirectController extends AbstractController
 
         // Check if store @ip is enabled
         if ($entity->isStoringIp()) {
-            $clientIp = Website::getClientIp();
+            $clientIp = Client::getIp();
         } else {
             $clientIp = null;
         }
