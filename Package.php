@@ -37,7 +37,6 @@ class Package implements IPackageConfig
     {
         return [
             new PackageMenuType(
-                lang: 'fr',
                 icon: 'fas fa-directions',
                 title: 'Redirect',
                 url: null,
@@ -50,25 +49,6 @@ class Package implements IPackageConfig
                     ),
                     new PackageSubMenuType(
                         title: 'Statistiques',
-                        permission: 'redirect.stats',
-                        url: 'redirect/stats',
-                    ),
-                ]
-            ),
-            new PackageMenuType(
-                lang: 'en',
-                icon: 'fas fa-directions',
-                title: 'Redirect',
-                url: null,
-                permission: null,
-                subMenus: [
-                    new PackageSubMenuType(
-                        title: 'Manage',
-                        permission: 'redirect.show',
-                        url: 'redirect/list',
-                    ),
-                    new PackageSubMenuType(
-                        title: 'Statistics',
                         permission: 'redirect.stats',
                         url: 'redirect/stats',
                     ),
