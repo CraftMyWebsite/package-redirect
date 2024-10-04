@@ -52,4 +52,9 @@ return [
             'stats' => 'Afficher les stats',
         ],
     ],
+    'menu' => [
+        'main' => 'Redirection',
+        'manage' => 'Gestion',
+        'stats' => 'Statistiques',
+    ],
 ];

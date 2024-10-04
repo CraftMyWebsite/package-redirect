@@ -2,6 +2,7 @@
 
 namespace CMW\Package\Redirect;
 
+use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\IPackageConfig;
 use CMW\Manager\Package\PackageMenuType;
 use CMW\Manager\Package\PackageSubMenuType;
@@ -38,17 +39,17 @@ class Package implements IPackageConfig
         return [
             new PackageMenuType(
                 icon: 'fas fa-directions',
-                title: 'Redirect',
+                title: LangManager::translate('redirect.menu.main'),
                 url: null,
                 permission: null,
                 subMenus: [
                     new PackageSubMenuType(
-                        title: 'Gestion',
+                        title: LangManager::translate('redirect.menu.manage'),
                         permission: 'redirect.show',
                         url: 'redirect/manage',
                     ),
                     new PackageSubMenuType(
-                        title: 'Statistiques',
+                        title: LangManager::translate('redirect.menu.stats'),
                         permission: 'redirect.stats',
                         url: 'redirect/stats',
                     ),
