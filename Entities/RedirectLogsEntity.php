@@ -2,7 +2,9 @@
 
 namespace CMW\Entity\Redirect;
 
-class RedirectLogsEntity
+use CMW\Manager\Package\AbstractEntity;
+
+class RedirectLogsEntity extends AbstractEntity
 {
     private int $id;
     private ?int $redirectId;
