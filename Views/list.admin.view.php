@@ -22,7 +22,7 @@ $description = LangManager::translate('redirect.dashboard.desc');
     </div>
 
     <form id="add" method="post" action="">
-        <?php (new SecurityManager())->insertHiddenToken() ?>
+        <?php SecurityManager::getInstance()->insertHiddenToken() ?>
         <div class="grid-2">
             <div>
                 <label for="name"><?= LangManager::translate('redirect.dashboard.name') ?> :</label>
@@ -116,7 +116,7 @@ $description = LangManager::translate('redirect.dashboard.desc');
                                     <button type="button" data-modal-hide="modal-edit-<?= $redirect->getId() ?>"><i class="fa-solid fa-xmark"></i></button>
                                 </div>
                                 <form id="edit" action="manage/edit/<?= $redirect->getId() ?>" method="post" enctype="multipart/form-data">
-                                    <?php (new SecurityManager())->insertHiddenToken() ?>
+                                    <?php SecurityManager::getInstance()->insertHiddenToken() ?>
                                 <div class="modal-body">
                                     <div>
                                         <label for="name"><?= LangManager::translate('redirect.dashboard.name') ?> :</label>
