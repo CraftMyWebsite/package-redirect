@@ -47,11 +47,13 @@ class Package implements IPackageConfig
                         title: LangManager::translate('redirect.menu.manage'),
                         permission: 'redirect.show',
                         url: 'redirect/manage',
+                        subMenus: []
                     ),
                     new PackageSubMenuType(
                         title: LangManager::translate('redirect.menu.stats'),
                         permission: 'redirect.stats',
                         url: 'redirect/stats',
+                        subMenus: []
                     ),
                 ]
             ),
