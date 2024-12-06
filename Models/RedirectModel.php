@@ -213,19 +213,21 @@ class RedirectModel extends AbstractModel
      */
     public function getTotalClicks(): int
     {
-        $toReturn = 0;
-
-        $sql = 'SELECT SUM(redirect_click) FROM cmw_redirect';
+        $sql = 'SELECT SUM(redirect_click) as `count` FROM cmw_redirect';
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute()) {
-            $result = $req->fetch();
-
-            (empty($result['SUM(click)'])) ?: $toReturn = $result['SUM(redirect_click)'];
+        if (!$req->execute()) {
+            return 0;
         }
 
-        return $toReturn;
+        $res = $req->fetch();
+
+        if (!$res) {
+            return 0;
+        }
+
+        return $res['count'];
     }
 
     /**

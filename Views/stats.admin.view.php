@@ -1,17 +1,20 @@
 <?php
 
+use CMW\Entity\Redirect\RedirectEntity;
 use CMW\Manager\Lang\LangManager;
 
 $title = LangManager::translate('redirect.dashboard.title_stats');
 $description = LangManager::translate('redirect.dashboard.desc_stats');
 
-/* @var \CMW\Entity\Redirect\RedirectEntity[] $stats */
-/* @var \CMW\Model\Redirect\RedirectModel $redirectionNumber */
-/* @var \CMW\Model\Redirect\RedirectModel $totalClicks */
-/* @var \CMW\Entity\Redirect\RedirectEntity[] $allClicks */
+/* @var RedirectEntity[] $stats */
+/* @var int $redirectionNumber */
+/* @var int $totalClicks */
+/* @var int $allClicks */
 ?>
 
-<h3><i class="fas fa-chart-area"></i> <?= LangManager::translate('redirect.dashboard.title_stats') ?></h3>
+<h3><i class="fas fa-chart-area"></i> 
+    <?= LangManager::translate('redirect.dashboard.title_stats') ?>
+</h3>
 
 <div class="grid-3">
     <div class="col-span-2 card">
@@ -21,16 +24,16 @@ $description = LangManager::translate('redirect.dashboard.desc_stats');
     <div class="card">
         <h6>Quelques chiffres</h6>
         <div class="alert alert-primary">
-            <h4 class="alert-heading text-center"><?= number_format($redirectionNumber) ?> <span
+            <h4 class="alert-heading "><?= number_format($redirectionNumber) ?> <span
                     style="font-size: smaller;"><?= LangManager::translate('redirect.dashboard.stats_number') ?></span>
             </h4>
         </div>
-        <div class="alert alert-primary text-center">
+        <div class="alert alert-primary">
             <h4 class="alert-heading"><?= number_format($totalClicks) ?> <span
                     style="font-size: smaller;"><?= LangManager::translate('redirect.dashboard.stats_clicks_actives') ?></span>
             </h4>
         </div>
-        <div class="alert alert-primary text-center">
+        <div class="alert alert-primary">
             <h4 class="alert-heading"><?= number_format($allClicks) ?> <span
                     style="font-size: smaller;"><?= LangManager::translate('redirect.dashboard.stats_clicks_total') ?></span>
             </h4>
@@ -42,10 +45,10 @@ $description = LangManager::translate('redirect.dashboard.desc_stats');
     var options = {
         series: [<?php foreach ($stats as $items): ?>
             <?php try {
-                echo json_encode($items->getClick(), JSON_THROW_ON_ERROR) . ',';
-            } catch (JsonException $e) {
-                echo $e;
-            } ?>
+            echo json_encode($items->getClick(), JSON_THROW_ON_ERROR) . ',';
+        } catch (JsonException $e) {
+            echo $e;
+        } ?>
             <?php endforeach; ?>],
         chart: {
             width: 600,
@@ -53,10 +56,10 @@ $description = LangManager::translate('redirect.dashboard.desc_stats');
         },
         labels: [<?php foreach ($stats as $items): ?>
             <?php try {
-                echo json_encode($items->getName(), JSON_THROW_ON_ERROR) . ',';
-            } catch (JsonException $e) {
-                echo $e;
-            } ?>
+            echo json_encode($items->getName(), JSON_THROW_ON_ERROR) . ',';
+        } catch (JsonException $e) {
+            echo $e;
+        } ?>
             <?php endforeach; ?>],
         responsive: [{
             breakpoint: 480,
