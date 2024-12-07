@@ -21,6 +21,13 @@ return [
         'stats_clicks_total' => 'cliques totaux',
         'stats_clicks_actives' => 'cliques totaux actifs',
         'save_ip' => 'Enregistrer les adresses ip',
+        'stats' => [
+            'utm' => [
+                'title' => 'Redirect - UTM',
+                'desc' => 'Statistiques des UTM',
+                'heading' => 'Statistiques - UTM',
+            ],
+        ],
     ],
     'modal' => [
         'delete' => 'Supression de :',
@@ -55,6 +62,10 @@ return [
     'menu' => [
         'main' => 'Redirection',
         'manage' => 'Gestion',
-        'stats' => 'Statistiques',
+        'stats' => [
+            'title' => 'Statistiques',
+            'general' => 'Générales',
+            'utm' => 'UTM',
+        ],
     ],
 ];

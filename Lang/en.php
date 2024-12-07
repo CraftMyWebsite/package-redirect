@@ -21,6 +21,13 @@ return [
         'stats_clicks_total' => ' total clicks',
         'stats_clicks_actives' => ' total clicks active',
         'save_ip' => 'Save ip address',
+        'stats' => [
+            'utm' => [
+                'title' => 'Redirect - UTM',
+                'desc' => 'Stats of UTM',
+                'heading' => 'Stats - UTM',
+            ],
+        ],
     ],
     'modal' => [
         'delete' => 'Delete :',
@@ -53,8 +60,12 @@ return [
         ],
     ],
     'menu' => [
-        'main' => 'Redirect',
+        'main' => 'Redirection',
         'manage' => 'Manage',
-        'stats' => 'Statistics',
+        'stats' => [
+            'title' => 'Statistics',
+            'general' => 'General',
+            'utm' => 'UTM',
+        ],
     ],
 ];

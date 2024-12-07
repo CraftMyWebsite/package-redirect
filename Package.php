@@ -16,7 +16,7 @@ class Package implements IPackageConfig
 
     public function version(): string
     {
-        return '1.0.0';
+        return '1.1.0';
     }
 
     public function authors(): array
@@ -50,10 +50,23 @@ class Package implements IPackageConfig
                         subMenus: []
                     ),
                     new PackageSubMenuType(
-                        title: LangManager::translate('redirect.menu.stats'),
+                        title: LangManager::translate('redirect.menu.stats.title'),
                         permission: 'redirect.stats',
-                        url: 'redirect/stats',
-                        subMenus: []
+                        url: '',
+                        subMenus: [
+                            new PackageSubMenuType(
+                                title: LangManager::translate('redirect.menu.stats.general'),
+                                permission: 'redirect.stats',
+                                url: 'redirect/stats/general',
+                                subMenus: []
+                            ),
+                            new PackageSubMenuType(
+                                title: LangManager::translate('redirect.menu.stats.utm'),
+                                permission: 'redirect.stats',
+                                url: 'redirect/stats/utm',
+                                subMenus: []
+                            ),
+                        ]
                     ),
                 ]
             ),

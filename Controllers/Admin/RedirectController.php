@@ -10,18 +10,15 @@ use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
 use CMW\Manager\Router\Link;
 use CMW\Manager\Views\View;
-use CMW\Model\Redirect\RedirectLogsModel;
 use CMW\Model\Redirect\RedirectModel;
-use CMW\Utils\Client;
 use CMW\Utils\Redirect;
-use CMW\Utils\Website;
 use JetBrains\PhpStorm\NoReturn;
 
 /**
  * Class: @RedirectController
  * @package Redirect
  * @author Teyir
- * @version 0.0.1
+ * @version 1.0.0
  */
 class RedirectController extends AbstractController
 {
@@ -122,56 +119,5 @@ class RedirectController extends AbstractController
             LangManager::translate('redirect.toast.delete_success'));
 
         Redirect::redirectPreviousRoute();
-    }
-
-    #[Link('/stats', Link::GET, [], '/cmw-admin/redirect')]
-    private function stats(): void
-    {
-        UsersController::redirectIfNotHavePermissions('core.dashboard', 'redirect.stats');
-
-        $stats = RedirectModel::getInstance()->getRedirects();
-
-        $redirectionNumber = RedirectModel::getInstance()->getNumberOfLines();
-
-        $totalClicks = RedirectModel::getInstance()->getTotalClicks();
-
-        $allClicks = redirectLogsModel::getInstance()->getAllClicks();
-
-        View::createAdminView('Redirect', 'stats')
-            ->addScriptBefore('Admin/Resources/Vendors/Apexcharts/Js/apexcharts.js',
-                'App/Package/Redirect/Views/Assets/Js/main.js')
-            ->addVariableList(['allClicks' => $allClicks, 'stats' => $stats,
-                'redirectionNumber' => $redirectionNumber, 'totalClicks' => $totalClicks])
-            ->view();
-    }
-
-    /* //////////////////// PUBLIC //////////////////// */
-
-    // Redirect
-    #[Link('/r/:slug', Link::GET, ['slug' => '.*?'])]
-    private function redirect(string $slug): void
-    {
-        // Check if slug exist
-        $entity = RedirectModel::getInstance()->getRedirectBySlug($slug);
-        if (is_null($entity)) {
-            Redirect::redirectToHome();
-        }
-
-        // Increase counter
-        RedirectModel::getInstance()->addClick($entity->getId());
-
-        // Check if store @ip is enabled
-        if ($entity->isStoringIp()) {
-            $clientIp = Client::getIp();
-        } else {
-            $clientIp = null;
-        }
-
-        // Logs
-        RedirectLogsModel::getInstance()->createLog($entity->getId(), $clientIp);
-
-        // Redirect
-        http_response_code(302);
-        header('Location: ' . $entity->getTarget());
     }
 }
