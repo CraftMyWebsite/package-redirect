@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS `cmw_redirect_logs`
     `date`        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `client_ip`   VARCHAR(39) NULL     DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `redirect_logs_redirect_id` (`id`),
+    KEY `redirect_id` (`redirect_id`),
     CONSTRAINT `cmw_redirect_logs_fk` FOREIGN KEY (`redirect_id`)
-        REFERENCES `cmw_redirect` (`redirect_id`) ON DELETE SET NULL ON UPDATE SET NULL
+        REFERENCES `cmw_redirect` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
