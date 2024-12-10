@@ -1,6 +1,6 @@
 <?php
 
-namespace CMW\Controller\Redirect;
+namespace CMW\Controller\Redirect\Admin;
 
 use CMW\Controller\users\UsersController;
 use CMW\Manager\Filter\FilterManager;
