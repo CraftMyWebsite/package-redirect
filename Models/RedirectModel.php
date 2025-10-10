@@ -6,6 +6,7 @@ use CMW\Entity\Redirect\RedirectEntity;
 use CMW\Manager\Database\DatabaseManager;
 use CMW\Manager\Package\AbstractModel;
 use CMW\Utils\Redirect;
+use function count;
 
 /**
  * Class @RedirectModel

@@ -6,12 +6,13 @@ use CMW\Entity\Redirect\RedirectLogsEntity;
 use CMW\Entity\Redirect\RedirectUtmEntity;
 use CMW\Manager\Database\DatabaseManager;
 use CMW\Manager\Package\AbstractModel;
+use ReflectionException;
+use function count;
 
 /**
  * Class @RedirectLogsModel
  * @package Redirect
  * @author Teyir
- * @version 1.0
  */
 class RedirectLogsModel extends AbstractModel
 {
@@ -56,13 +57,11 @@ class RedirectLogsModel extends AbstractModel
             return null;
         }
 
-        //TODO IMPROVE THAT
-        return new RedirectLogsEntity(
-            $res['id'],
-            $res['redirect_id'],
-            $res['date'],
-            $res['client_ip']
-        );
+        try {
+            return RedirectLogsEntity::toEntity($res);
+        } catch (ReflectionException) {
+            return null;
+        }
     }
 
     /**
@@ -115,7 +114,7 @@ class RedirectLogsModel extends AbstractModel
     public function getRedirectUtm(int $redirectId): array
     {
         $sql = "SELECT * FROM cmw_redirect_logs_utm 
-                JOIN cmw.cmw_redirect_logs crl on cmw_redirect_logs_utm.log_id = crl.id
+                JOIN cmw_redirect_logs crl on cmw_redirect_logs_utm.log_id = crl.id
                 WHERE crl.redirect_id = :redirect_id";
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
@@ -130,6 +129,10 @@ class RedirectLogsModel extends AbstractModel
             return [];
         }
 
-        return RedirectUtmEntity::toEntityList($res);
+        try {
+            return RedirectUtmEntity::toEntityList($res);
+        } catch (ReflectionException) {
+            return [];
+        }
     }
 }
