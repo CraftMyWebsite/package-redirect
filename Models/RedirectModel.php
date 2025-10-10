@@ -231,7 +231,7 @@ class RedirectModel extends AbstractModel
             return 0;
         }
 
-        return $res['count'];
+        return $res['count'] ?? 0;
     }
 
     /**
